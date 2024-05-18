@@ -32,10 +32,11 @@
                         <li><a href="dashboard_two.html">Dashboard Two</a></li>
                     </ul>
                 </li>
+                <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Academic Session</a></li>
                 <li>
                     <a class="has-arrow material-ripple" href="#">
                         <i class="typcn typcn-chart-pie-outline mr-2"></i>
-                        Charts
+                        Academic Session
                     </a>
                     <ul class="nav-second-level">
                         <li><a href="charts_flot.html">Flot Chart</a></li>

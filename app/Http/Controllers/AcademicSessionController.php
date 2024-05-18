@@ -12,23 +12,27 @@ use Session;
 
 class AcademicSessionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data['academic_sessions'] = AcademicSession::orderBy('description', 'DESC')->get();
-        return view('admin.academic_session', $data);
+        if($request->ajax()){
+            $acc= AcademicSession::where('school_id',auth()->user()->school_id)->orderBy('description', 'DESC')->get();
+            return response()->json($acc);
+        }
+        return view('admin.academic_session');
     }
 
     public function create(Request $request)
     {
         $input = $request->all();
         //validate session whether it exist
-        $existingData = AcademicSession::where('description', $request->description)->first();
+        $existingData = AcademicSession::where('school_id',auth()->user()->school_id)->where('description', $request->description)->first();
 
         if ($existingData) {
             return response()->json(['message' => 'Session already exist.'], 400);
         }
 
-        // dd($input);
+        $input['school_id']= auth()->user()->school_id;
+        $input['created_by']= auth()->user()->id;
         $createSession = AcademicSession::create($input);
 
         return response()->json(['message' => 'New session added successfully!'], 400);
@@ -39,7 +43,7 @@ class AcademicSessionController extends Controller
     {
         $id = $request->id;
         // dd($id);
-        $prog = AcademicSession::where('id', $id)->first();
+        $prog = AcademicSession::where('school_id',auth()->user()->school_id)->where('id', $id)->first();
         return response()->json($prog);
     }
 
@@ -51,7 +55,7 @@ class AcademicSessionController extends Controller
             $input = $request->all();
             $id = $request->id;
             // dd($input);
-            $available = AcademicSession::where('description', $request->description)->where('id', '!=', $id)
+            $available = AcademicSession::where('school_id',auth()->user()->school_id)->where('description', $request->description)->where('id', '!=', $id)
                 ->first();
 
             if ($available) {
@@ -59,7 +63,7 @@ class AcademicSessionController extends Controller
 
             }
 
-            $program = AcademicSession::find($id);
+            $program = AcademicSession::where('school_id',auth()->user()->school_id)->find($id);
 
             // dd($request->all());        
 
@@ -78,12 +82,12 @@ class AcademicSessionController extends Controller
     public function activate(Request $request)
     {
         $id = $request->id;
-        $accSess = AcademicSession::where('id', $id)->first();
+        $accSess = AcademicSession::where('school_id',auth()->user()->school_id)->where('id', $id)->first();
         //activate this session and deactivate other session
         $activateSession = $accSess->update(['active' => 1]);
         Session::put('currentSessiond', $accSess->description);
         //deactivate other sesson
-        $deactivate = AcademicSession::where('id', '!=', $id)->update(['active' => 0]);
+        $deactivate = AcademicSession::where('school_id',auth()->user()->school_id)->where('id', '!=', $id)->update(['active' => 0]);
         return response()->json(['message' => 'Academic session activated successfully!'], 200);
 
     }
@@ -92,7 +96,7 @@ class AcademicSessionController extends Controller
     public function activateSemester(Request $request)
     {
         $id = $request->id;
-        $accSess = AcademicSession::where('id', $id)->first();
+        $accSess = AcademicSession::where('school_id',auth()->user()->school_id)->where('id', $id)->first();
         //activate this session and deactivate other session
         //check current semester
         if ($accSess->semester == 'First Semester') {
