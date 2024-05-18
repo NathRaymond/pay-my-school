@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
 
-<!-- Mirrored from bhulua.thememinister.com/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 06 Feb 2023 04:40:12 GMT -->
 <head>
         <!-- Required meta tags -->
         <meta charset="utf-8">
