@@ -1,11 +1,11 @@
 <nav class="sidebar sidebar-bunker">
     <div class="sidebar-header">
         <!--<a href="index.html" class="logo"><span>bd</span>task</a>-->
-        <a href="index.html" class="logo"><img src="assets/dist/img/logo.png" alt=""></a>
+        <a href="index.html" class="logo"><img src="{{ asset("assets/dist/img/logo.png") }}" alt=""></a>
     </div><!--/.sidebar header-->
     <div class="profile-element d-flex align-items-center flex-shrink-0">
         <div class="avatar online">
-            <img src="assets/dist/img/avatar-1.jpg" class="img-fluid rounded-circle" alt="">
+            <img src="{{ asset("assets/dist/img/avatar-1.jpg") }}" class="img-fluid rounded-circle" alt="">
         </div>
         <div class="profile-text">
             <h6 class="m-0">{{ auth()->user()->name }}</h6>
@@ -46,7 +46,7 @@
                         <li><a href="charts_apex.html">Chart Apex</a></li>
                     </ul>
                 </li>
-                <li><a href="chat.html"><i class="typcn typcn-messages mr-2"></i> Chat</a></li>
+                <li><a href="{{ route('admin.student.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage Students</a></li>
                 <li>
                     <a class="has-arrow material-ripple" href="#">
                         <i class="typcn typcn-mail mr-2"></i>
