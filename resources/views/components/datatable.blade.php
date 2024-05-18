@@ -1,5 +1,5 @@
 <script>
-    function loadPageDatatable() {
+    function loadPageDatatable(dataUrl) {
         // Call the destroy function before reinitializing DataTable
         destroyDataTable();
 
