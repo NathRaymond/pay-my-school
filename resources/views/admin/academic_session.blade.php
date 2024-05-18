@@ -28,7 +28,7 @@
                 <div class="table-responsive">
                     <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal"
                         data-target="#exampleModal1">Add New Session</button>
-                   
+
                         <table id="specialTable" class="table table-striped table-bordered dt-responsive nowrap"
                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>

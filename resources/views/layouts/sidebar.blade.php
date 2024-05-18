@@ -22,13 +22,13 @@
         <nav class="sidebar-nav">
             <ul class="metismenu">
                 <li class="nav-label">Main Menu</li>
-                <li class="mm-active">
+                <li >
                     <a class="has-arrow material-ripple" href="#">
                         <i class="typcn typcn-home-outline mr-2"></i>
                         Dashboard
                     </a>
                     <ul class="nav-second-level">
-                        <li class="mm-active"><a href="index.html">Default</a></li>
+                        <li ><a href="index.html">Default</a></li>
                         <li><a href="dashboard_two.html">Dashboard Two</a></li>
                     </ul>
                 </li>
@@ -47,7 +47,7 @@
                         <li><a href="charts_apex.html">Chart Apex</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ route('admin.student.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage Students</a></li>
+                <li class="{{ Route::currentRouteName() === 'admin.student.index' ? 'mm-active' : '' }}"><a href="{{ route('admin.student.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage Students</a></li>
                 <li>
                     <a class="has-arrow material-ripple" href="#">
                         <i class="typcn typcn-mail mr-2"></i>
