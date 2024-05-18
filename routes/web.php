@@ -14,7 +14,7 @@ use App\Http\Controllers\StudentController;
 */
 
 use App\Http\Controllers\AcademicSessionController;
-
+use App\Http\Controllers\TermController;
 
 Auth::routes();
 
@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::group(['prefix' => 'admin'], function () {
         Route::resource('academic_session', AcademicSessionController::class);
+        Route::resource('term', TermController::class);
 
         Route::group(['prefix' => 'student'], function () {
             Route::get('/', [App\Http\Controllers\StudentController::class, 'index'])->name('admin.student.index');
