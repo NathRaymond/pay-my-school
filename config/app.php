@@ -140,7 +140,7 @@ return [
          * Laravel Framework Service Providers...
          */
 
-
+         Maatwebsite\Excel\ExcelServiceProvider::class,
         // OwenIt\Auditing\AuditingServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
