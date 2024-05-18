@@ -10,16 +10,9 @@
         <title>School</title>
         <!-- App favicon -->
         <link rel="shortcut icon" href="assets/dist/img/favicon.png">
-        <!--Global Styles(used by all pages)-->
-        <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="assets/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
-        <link href="assets/plugins/fontawesome/css/all.min.css" rel="stylesheet">
-        <link href="assets/plugins/typicons/src/typicons.min.css" rel="stylesheet">
-        <link href="assets/plugins/themify-icons/themify-icons.min.css" rel="stylesheet">
-        <!--Third party Styles(used by this page)-->
-        <link href="assets/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-        <!--Start Your Custom Style Now-->
-        <link href="assets/dist/css/style.css" rel="stylesheet">
+
+        @include('layouts.styles')
+        @yield('css')
     </head>
     <body class="fixed">
         <!-- Page Loader -->
@@ -50,20 +43,10 @@
             </div>
         </div>
         <!--Global script(used by all pages)-->
-        <script src="assets/plugins/jQuery/jquery-3.4.1.min.js"></script>
-        <script src="assets/dist/js/popper.min.js"></script>
-        <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-        <script src="assets/plugins/metisMenu/metisMenu.min.js"></script>
-        <script src="assets/plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
-        <!-- Third Party Scripts(used by this page)-->
-        <script src="assets/plugins/chartJs/Chart.min.js"></script>
-        <script src="assets/plugins/sparkline/sparkline.min.js"></script>
-        <script src="assets/plugins/datatables/dataTables.min.js"></script>
-        <script src="assets/plugins/datatables/dataTables.bootstrap4.min.js"></script>
-        <!--Page Active Scripts(used by this page)-->
-        <script src="assets/dist/js/pages/dashboard.js"></script>
-        <!--Page Scripts(used by all page)-->
-        <script src="assets/dist/js/sidebar.js"></script>
+        @include('layouts.js')
+
+        @yield('script')
+
     </body>
 
 </html>

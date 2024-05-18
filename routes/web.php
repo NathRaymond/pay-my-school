@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\StudentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,5 +25,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'admin'], function () {
         Route::resource('academic_session', AcademicSessionController::class);
 
+        Route::group(['prefix' => 'student'], function () {
+            Route::get('/', [App\Http\Controllers\StudentController::class, 'index'])->name('admin.student.index');
+        });
     });
 });
