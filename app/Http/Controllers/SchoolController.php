@@ -47,7 +47,7 @@ class SchoolController extends Controller
             $input['school_id'] = $school->id;
             //$input['user_type'] = "School";
             // dd($input);
-            $input['password'] = Hash::make("password");
+            $input['password'] = Hash::make("password@321");
             // insert into user table
             $user = User::create($input);
             // lets update the school table user id with the id of the user
