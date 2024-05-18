@@ -23,7 +23,7 @@ Route::get('/unauthenticated', function () {
 Route::get('/unauthorized', function () {
     return response()->json(['message' => "Unauthorized"], 403);
 })->name('api.unauthorized');
-Route::post('/login', [App\Http\Controllers\Api\RegisterController::class, 'login']);
+Route::post('/create', [App\Http\Controllers\SchoolController::class, 'create']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 

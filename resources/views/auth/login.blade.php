@@ -39,15 +39,16 @@
                         <a class="btn  btn-google btn-block bg-white text-left font-weight-normal position-relative mb-3" href="#">
                             <span>Sign up with Google</span>
                         </a>
-                        <p class="text-muted text-center">We won't post anything without your permission and your personal details are kept private</p>
+                        <p class="text-muted text-center">We wont post anything without your permission and your personal details are kept private</p>
                         <div class="divider font-weight-bold text-uppercase text-dark d-table text-center my-3">Or</div>
-                        <form class="register-form">
+                        <form action="{{ route('login') }}" method="post">
+                            @csrf
                             <div class="form-group">
-                                <input type="email" class="form-control is-invalid" id="emial" placeholder="Enter email">
+                                <input type="email" name="email" class="form-control is-invalid" id="emial" placeholder="Enter email">
                                 <div class="invalid-feedback text-left">Enter your valid email</div>
                             </div>
                             <div class="form-group">
-                                <input type="password" class="form-control" id="pass" placeholder="Password">
+                                <input type="password" name="password" class="form-control" id="pass" placeholder="Password">
                             </div>
                             <div class="custom-control custom-checkbox mb-3">
                                 <input type="checkbox" class="custom-control-input" id="customCheck1">
@@ -78,5 +79,4 @@
         <script src="assets/dist/js/sidebar.js"></script>
     </body>
 
-<!-- Mirrored from bhulua.thememinister.com/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 06 Feb 2023 04:40:12 GMT -->
 </html>
