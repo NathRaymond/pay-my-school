@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\StudentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,5 +21,8 @@ Route::group(['middleware' => ['auth']], function () {
         return view('welcome');
     });
     Route::group(['prefix' => 'admin'], function () {
+        Route::group(['prefix' => 'student'], function () {
+            Route::get('/', [App\Http\Controllers\StudentController::class, 'index'])->name('admin.student.index');
+        });
     });
 });
