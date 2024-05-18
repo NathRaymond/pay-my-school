@@ -1,8 +1,6 @@
 @extends('layouts.master')
 
 @section('body')
-
-
         <!--Content Header (Page header)-->
         <div class="content-header row align-items-center m-0">
             <nav aria-label="breadcrumb" class="col-sm-4 order-sm-last mb-3 mb-sm-0 p-0 ">
@@ -422,7 +420,7 @@
                 </div>
             </div>
         </div><!--/.body content-->
-   
+
 @endsection
 
 
