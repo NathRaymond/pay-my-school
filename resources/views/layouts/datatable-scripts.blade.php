@@ -12,3 +12,4 @@
 <script src="{{ asset("assets/plugins/datatables/data-bootstrap4.active.js")}}"></script>
 <script src="{{ asset("assets/plugins/datatables/dataTables.min.js")}}"></script>
 <script src="{{ asset("assets/plugins/datatables/dataTables.bootstrap4.min.js")}}"></script>
+
