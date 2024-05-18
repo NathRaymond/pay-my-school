@@ -29,10 +29,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 });
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/get-active-adverts', [App\Http\Controllers\AdvertController::class, 'activeAdvert']);
-    Route::get('/get-advert-details',  [App\Http\Controllers\AdvertController::class, 'advertDetails']);
-    Route::get('/get-archive-record',  [App\Http\Controllers\ArchiveController::class, 'getArchiveByRecord']);
-    Route::get('/get-government-news',  [App\Http\Controllers\NewsController::class, 'getGovernmentNews']);
-    Route::get('/get-mda-news',  [App\Http\Controllers\NewsController::class, 'getMdaNews']);
-    Route::get('/get-news',  [App\Http\Controllers\NewsController::class, 'getNews']);
+ 
 });

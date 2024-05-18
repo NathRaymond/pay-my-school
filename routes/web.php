@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+use App\Http\Controllers\AcademicSessionController;
+
 
 Auth::routes();
 
@@ -21,5 +23,7 @@ Route::group(['middleware' => ['auth']], function () {
         return view('welcome');
     });
     Route::group(['prefix' => 'admin'], function () {
+        Route::resource('academic_session', AcademicSessionController::class);
+
     });
 });
