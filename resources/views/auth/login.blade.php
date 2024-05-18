@@ -1,272 +1,83 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
-<!--begin::Head-->
 
-<!-- Added by HTTrack -->
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<!-- Mirrored from bhulua.thememinister.com/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 06 Feb 2023 04:40:12 GMT -->
 <head>
-    <title>OGUN STATE WEBSITE</title>
-    <meta charset="utf-8" />
-    <meta name="description" content="Ogun State Website Admin Panel" />
-    <meta name="keywords" content="Ogun State Website Admin Panel " />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="Ogun State Website Admin Panel" />
-    <meta property="og:url" content="https://admin.ogunstate.gov.ng/login" />
-    <meta property="og:site_name" content="Ogun State Website Admin Panel" />
-    <link rel="canonical" href="https://admin.ogunstate.gov.ng/login" />
-    <link rel="shortcut icon" href="{{asset ('assets/media/logos/ogun.jpg') }}" />
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Responsive Bootstrap 4 Admin &amp; Dashboard Template">
+        <meta name="author" content="Bdtask">
+        <title>Bhulua - Bootstrap 4 Admin Template Deshboard</title>
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/dist/img/favicon.png">
+        <!--Global Styles(used by all pages)-->
+        <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+        <link href="assets/plugins/fontawesome/css/all.min.css" rel="stylesheet">
+        <link href="assets/plugins/typicons/src/typicons.min.css" rel="stylesheet">
+        <link href="assets/plugins/themify-icons/themify-icons.min.css" rel="stylesheet">
+        <!--Third party Styles(used by this page)-->
 
-    <!--begin::Fonts(mandatory for all pages)-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-    <!--end::Fonts-->
-
-
-    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    <link href="../../../assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="../../../assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-    <!--end::Global Stylesheets Bundle-->
-
-    <!--begin::Google tag-->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37564768-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'UA-37564768-1');
-
-    </script>
-    <!--end::Google tag-->
-    <script>
-        // Frame-busting to prevent site from being loaded within a frame without permission (click-jacking)
-        if (window.top != window.self) {
-            window.top.location.replace(window.self.location.href);
-        }
-
-    </script>
-</head>
-<!--end::Head-->
-
-<!--begin::Body-->
-<body id="kt_body" class="app-blank bgi-size-cover bgi-attachment-fixed bgi-position-center">
-    <!--begin::Theme mode setup on page load-->
-    <script>
-        var defaultThemeMode = "light";
-        var themeMode;
-
-        if (document.documentElement) {
-            if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
-                themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
-            } else {
-                if (localStorage.getItem("data-bs-theme") !== null) {
-                    themeMode = localStorage.getItem("data-bs-theme");
-                } else {
-                    themeMode = defaultThemeMode;
-                }
-            }
-
-            if (themeMode === "system") {
-                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            }
-
-            document.documentElement.setAttribute("data-bs-theme", themeMode);
-        }
-
-    </script>
-    <!--end::Theme mode setup on page load-->
-    <!--Begin::Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FS8GGP" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!--End::Google Tag Manager (noscript) -->
-
-    <!--begin::Root-->
-    <div class="d-flex flex-column flex-root" id="kt_app_root">
-        <!--begin::Page bg image-->
-        <style>
-            body {
-                background-image: url('../../../assets/media/auth/bg10.jpg');
-            }
-
-            [data-bs-theme="dark"] body {
-                background-image: url('../../../assets/media/auth/bg10-dark.jpg');
-            }
-
-        </style>
-        <!--end::Page bg image-->
-
-        <!--begin::Authentication - Sign-in -->
-        <div class="d-flex flex-column flex-lg-row flex-column-fluid">
-            <!--begin::Aside-->
-            <div class="d-flex flex-lg-row-fluid">
-                <!--begin::Content-->
-                <div class="d-flex flex-column flex-center pb-0 pb-lg-10 p-10 w-100">
-                    <!--begin::Image-->
-                    <img class="theme-light-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20" src="{{ asset('assets/media/logos/ogunlogo.png') }}" alt="" />
-                    <img class="theme-dark-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20" src="{{ asset('assets/media/logos/ogunlogo.png') }}" alt="" />
-                    <!--end::Image-->
-
-                    <!--begin::Title-->
-                    <h1 class="text-gray-800 fs-2qx fw-bold text-center mb-7">
-                        Ogun State Website Admin Panel
-                    </h1>
-                    <!--end::Title-->
-
-                    <!--begin::Text-->
-                    <div class="text-gray-600 fs-base text-center fw-semibold">
-                        Effective manage  <a href="#" class="opacity-75-hover text-primary me-1">contents  </a>
-
-                        such as news , blogs ,media, <br /> text and etc in one window
-
-
+        <!--Start Your Custom Style Now-->
+        <link href="assets/dist/css/style.css" rel="stylesheet">
+    </head>
+    <body class="bg-white">
+        <div class="d-flex align-items-center justify-content-center text-center h-100vh">
+            <div class="form-wrapper m-auto">
+                <div class="form-container my-4">
+                    <div class="register-logo text-center mb-4">
+                        <img src="assets/dist/img/logo2.png" alt="">
                     </div>
-                    <!--end::Text-->
-                </div>
-                <!--end::Content-->
-            </div>
-            <!--begin::Aside-->
-
-            <!--begin::Body-->
-            <div class="d-flex flex-column-fluid flex-lg-row-auto justify-content-center justify-content-lg-end p-12">
-                <!--begin::Wrapper-->
-                <div class="bg-body d-flex flex-column flex-center rounded-4 w-md-600px p-10">
-                    <!--begin::Content-->
-                    <div class="d-flex flex-center flex-column align-items-stretch h-lg-100 w-md-400px">
-                        <!--begin::Wrapper-->
-                        <div class="d-flex flex-center flex-column flex-column-fluid pb-15 pb-lg-20">
-
-                            <!--begin::Form-->
-                            <form class="form w-100" method="post" action="{{ route('login') }}">
-                                @csrf
-                                <!--begin::Heading-->
-                                <div class="text-center mb-11">
-                                    <!--begin::Title-->
-                                    <h1 class="text-gray-900 fw-bolder mb-3">
-                                        Sign In
-                                    </h1>
-                                    <!--end::Title-->
-
-                                    <!--begin::Subtitle-->
-                                    {{-- <div class="text-gray-500 fw-semibold fs-6">
-            Your Social Campaigns
-        </div> --}}
-                                    <!--end::Subtitle--->
-                                </div>
-                                <!--begin::Heading-->
-
-                                <!--begin::Login options-->
-                                <div class="row g-3 mb-9">
-                                    <!--begin::Col-->
-                                    <div class="col-md-6">
-                                        <!--begin::Google link--->
-                                        {{-- <a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                <img alt="Logo" src="../../../assets/media/svg/brand-logos/google-icon.svg" class="h-15px me-3"/>
-                Sign in with Google
-            </a> --}}
-                                        <!--end::Google link--->
-                                    </div>
-                                    <!--end::Col-->
-
-                                    <!--begin::Col-->
-                                    <div class="col-md-6">
-                                        <!--begin::Google link--->
-                                        {{-- <a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                <img alt="Logo" src="../../../assets/media/svg/brand-logos/apple-black.svg" class="theme-light-show h-15px me-3"/>
-                <img alt="Logo" src="../../../assets/media/svg/brand-logos/apple-black-dark.svg" class="theme-dark-show h-15px me-3"/>
-                Sign in with Apple
-            </a> --}}
-                                        <!--end::Google link--->
-                                    </div>
-                                    <!--end::Col-->
-                                </div>
-                                <!--end::Login options-->
-
-                                <!--begin::Separator-->
-                                <div class="separator separator-content my-14">
-                                    <span class="w-125px text-gray-500 fw-semibold fs-7">With email</span>
-                                </div>
-                                <!--end::Separator-->
-
-                                <!--begin::Input group--->
-                                <div class="fv-row mb-8">
-                                    <!--begin::Email-->
-                                    <input type="text" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent" />
-                                    <!--end::Email-->
-                                </div>
-
-                                <!--end::Input group--->
-                                <div class="fv-row mb-3">
-                                    <!--begin::Password-->
-                                    <input type="password" placeholder="Password" name="password" autocomplete="off" class="form-control bg-transparent" />
-                                    <!--end::Password-->
-                                </div>
-                                <!--end::Input group--->
-
-                                <!--begin::Wrapper-->
-                                <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
-                                    <div></div>
-
-                                    <!--begin::Link-->
-                                    <a href="{{ route('password.request') }}" class="link-primary">
-                                        Forgot Password ?
-                                    </a>
-                                    <!--end::Link-->
-                                </div>
-                                <!--end::Wrapper-->
-
-                                <!--begin::Submit button-->
-                                <div class="d-grid mb-10">
-                                    <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
-
-                                        <!--begin::Indicator label-->
-                                        <span class="indicator-label">
-                                            Sign In</span>
-                                        <!--end::Indicator label-->
-
-                                        <!--begin::Indicator progress-->
-                                        <span class="indicator-progress">
-                                            Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                        </span>
-                                        <!--end::Indicator progress--> </button>
-                                </div>
-                                <!--end::Submit button-->
-
-                            </form>
-                            <!--end::Form-->
-
+                    <div class="panel">
+                        <div class="panel-header text-center mb-3">
+                            <h3 class="fs-24">Sign into your account!</h3>
+                            <p class="text-muted text-center mb-0">Nice to see you! Please log in with your account.</p>
                         </div>
-                        <!--end::Wrapper-->
+                        <a class="btn btn-linkedin btn-block bg-white text-left font-weight-normal position-relative mb-3"  href="#">
+                            <span>Sign up with LinkedIn</span>
+                        </a>
+                        <a class="btn  btn-google btn-block bg-white text-left font-weight-normal position-relative mb-3" href="#">
+                            <span>Sign up with Google</span>
+                        </a>
+                        <p class="text-muted text-center">We won't post anything without your permission and your personal details are kept private</p>
+                        <div class="divider font-weight-bold text-uppercase text-dark d-table text-center my-3">Or</div>
+                        <form class="register-form">
+                            <div class="form-group">
+                                <input type="email" class="form-control is-invalid" id="emial" placeholder="Enter email">
+                                <div class="invalid-feedback text-left">Enter your valid email</div>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="pass" placeholder="Password">
+                            </div>
+                            <div class="custom-control custom-checkbox mb-3">
+                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                <label class="custom-control-label" for="customCheck1">Remember me next time </label>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-block">Sign in</button>
+                        </form>
                     </div>
-                    <!--end::Content-->
+                    <div class="bottom-text text-center my-3">
+                        Don't have an account? <a href="register.html" class="font-weight-500">Sign Up</a><br>
+                        Remind <a href="forget_password.html" class="font-weight-500">Password</a>
+                    </div>
                 </div>
-                <!--end::Wrapper-->
             </div>
-            <!--end::Body-->
         </div>
-        <!--end::Authentication - Sign-in-->
-    </div>
-    <!--end::Root-->
+        <!-- /.End of form wrapper -->
+        <!--Global script(used by all pages)-->
+        <script src="assets/plugins/jQuery/jquery-3.4.1.min.js"></script>
+        <script src="assets/dist/js/popper.min.js"></script>
+        <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/plugins/metisMenu/metisMenu.min.js"></script>
+        <script src="assets/plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+        <!-- Third Party Scripts(used by this page)-->
 
-    <!--begin::Javascript-->
-    <script>
-        var hostUrl = "../../../assets/index.html";
+        <!--Page Active Scripts(used by this page)-->
 
-    </script>
+        <!--Page Scripts(used by all page)-->
+        <script src="assets/dist/js/sidebar.js"></script>
+    </body>
 
-    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-    <script src="../../../assets/plugins/global/plugins.bundle.js"></script>
-    <script src="../../../assets/js/scripts.bundle.js"></script>
-    <!--end::Global Javascript Bundle-->
-
-
-    <!--begin::Custom Javascript(used for this page only)-->
-    <script src="../../../assets/js/custom/authentication/sign-in/general.js"></script>
-    <!--end::Custom Javascript-->
-    <!--end::Javascript-->
-</body>
-<!--end::Body-->
-
+<!-- Mirrored from bhulua.thememinister.com/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 06 Feb 2023 04:40:12 GMT -->
 </html>
