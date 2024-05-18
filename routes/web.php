@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::group(['prefix' => 'admin'], function () {
         Route::resource('academic_session', AcademicSessionController::class);
+        Route::get('activate_academic_session', [AcademicSessionController::class,'activate'])->name('activate_session');
         Route::resource('term', TermController::class);
 
         Route::group(['prefix' => 'student'], function () {

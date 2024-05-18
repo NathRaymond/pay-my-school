@@ -12,3 +12,24 @@
 <script src="{{ asset('assets/dist/js/pages/dashboard.js')}}"></script>
 <!--Page Scripts(used by all page)-->
 <script src="{{ asset('assets/dist/js/sidebar.js')}}"></script>
+<script src="{{ asset('js/sweetalert/dist/sweetalert.min.js') }}"></script>
+<script>
+    @if ($errors->any())
+        swal('Oops...', "{!! implode('', $errors->all(':message')) !!}", 'error')
+    @endif
+
+    @if (session()->has('success'))
+        swal(
+        'Success!',
+        "{{ session()->get('message') }}",
+        'success'
+        )
+    @endif
+    @if (session()->has('message'))
+        swal(
+        'Success!',
+        "{{ session()->get('message') }}",
+        'success'
+        )
+    @endif
+</script>

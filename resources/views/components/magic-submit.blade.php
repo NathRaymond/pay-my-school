@@ -15,11 +15,13 @@
                     //reload datatable
                     loadPageDatatable();
                     $('.btn-close').click();
+                    $(this).trigger('reset');
                 },
                 error: function(xhr, status, error) {
                     // Handle error response
                     console.log(xhr, status, error);
                     console.error(xhr.responseText);
+                    new swal("Oops", xhr.responseText, 'error');
                     // You can show an error message here
                 }
             });

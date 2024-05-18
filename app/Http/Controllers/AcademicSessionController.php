@@ -21,7 +21,7 @@ class AcademicSessionController extends Controller
         return view('admin.academic_session');
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $input = $request->all();
         //validate session whether it exist
@@ -35,7 +35,7 @@ class AcademicSessionController extends Controller
         $input['created_by']= auth()->user()->id;
         $createSession = AcademicSession::create($input);
 
-        return response()->json(['message' => 'New session added successfully!'], 400);
+        return response()->json(['message' => 'New session added successfully!'], 200);
 
     }
 
@@ -88,7 +88,7 @@ class AcademicSessionController extends Controller
         Session::put('currentSessiond', $accSess->description);
         //deactivate other sesson
         $deactivate = AcademicSession::where('school_id',auth()->user()->school_id)->where('id', '!=', $id)->update(['active' => 0]);
-        return response()->json(['message' => 'Academic session activated successfully!'], 200);
+        return redirect()->back()->with(['message' => 'Academic session activated successfully!']);
 
     }
 

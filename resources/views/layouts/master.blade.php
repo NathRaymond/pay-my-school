@@ -47,6 +47,8 @@
         <!--Global script(used by all pages)-->
         @include('layouts.js')
 
+    
+
         @yield('script')
 
     </body>

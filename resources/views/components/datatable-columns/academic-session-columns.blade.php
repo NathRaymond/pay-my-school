@@ -6,8 +6,12 @@
         {
             "data": "id",
             "render": function(data, type, row) {
-                created_by = row.created_by.name?? "";
-                return created_by;
+                if(row.active==0){
+                    active = `<span class="badge badge-pill badge-danger">Inactive</span>`;
+                }else{
+                    active = `<span class="badge badge-pill badge-success">Active</span>`;
+                }
+                return active;
             }
         },
         {
@@ -20,12 +24,13 @@
                                                     data-id="${row.id}"
                                                     href="/admin/unit/delete/${row.id}" data-myaction="loadDatatable"
                                                     >Delete</a>
-                                            </div>`;
+                                                    <a href="/admin/activate_academic_session?id=${row.id}" onclick="return confirm('Are sure you want to active this session?')" class="btn btn-success flex-end m-1 btn-sm">Activate</a>
+                                            </div>  `;
 
                 return buttons;
             }
         }
     ];
     var dataUrl = "{{ route('academic_session.index') }}";
-    loadPageDatatable(dataUrl);
+    loadPageDatatable();
 </script>

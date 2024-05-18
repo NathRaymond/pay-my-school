@@ -28,15 +28,15 @@
                 <div class="table-responsive">
                     <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal"
                         data-target="#exampleModal1">Add New Session</button>
-                   
-                        <table id="specialTable" class="table table-striped table-bordered dt-responsive nowrap"
+
+                    <table id="specialTable" class="table table-striped table-bordered dt-responsive nowrap"
                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                             <tr>
                                 <th scope="col" style="width: 70px;">#</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">Active</th>
-                                < <th scope="col">Action</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,32 +53,33 @@
     <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form class="magicFormSubmit" method="POST" action="{{ route('academic_session.create') }}"  onsubmit="$('#loaderkk').show()" enctype="multipart/form-data">
+            <form class="magicFormSubmit" method="POST" action="{{ route('academic_session.store') }}"
+                onsubmit="$('#loaderkk').show()" enctype="multipart/form-data">
                 @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-600" id="exampleModalLabel4">Add New Session</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group row mb-4">
-                        <label for="" class="col-sm-3 col-form-label">Description</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="description" required>
-                        </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-600" id="exampleModalLabel4">Add New Session</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+                    <div class="modal-body">
+                        <div class="form-group row mb-4">
+                            <label for="" class="col-sm-3 col-form-label">Description</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="description" required>
+                            </div>
+                        </div>
 
 
 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-close" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success" >Submit</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </div>
-            </div>
-        </form>
+            </form>
         </div>
     </div>
 @endsection
