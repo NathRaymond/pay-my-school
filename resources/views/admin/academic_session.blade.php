@@ -23,12 +23,21 @@
 
 
         <div class="card mb-4">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="fs-17 font-weight-600 mb-0">Academic Session</h6>
+                    </div>
+                    <div class="text-right">
+                        
+                        <button type="button" class="btn btn-success rounded-pill w-100p btn-sm mr-1" data-toggle="modal" data-target="#exampleModal1">Add New Session</button>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
 
                 <div class="table-responsive">
-                    <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal"
-                        data-target="#exampleModal1">Add New Session</button>
-
+               
                     <table id="specialTable" class="table table-striped table-bordered dt-responsive nowrap"
                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>

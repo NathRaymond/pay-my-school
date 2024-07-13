@@ -48,7 +48,7 @@ $(document).ready(function () {
                         ticks: {
                             padding: 20,
                             fontSize: 14,
-                            fontFamily: "'Nunito Sans', sans-serif"
+                            fontFamily: "'Inter', sans-serif"
                         }
                     }]
             }
@@ -109,7 +109,7 @@ $(document).ready(function () {
         ctx.lineTo(x + width, y + height);
         // bottom left corner
         ctx.lineTo(x, y + height);
-        // top left	
+        // top left
         ctx.lineTo(x, y + radius);
         ctx.quadraticCurveTo(x, y, x + radius, y);
         ctx.closePath();
@@ -331,7 +331,7 @@ $(document).ready(function () {
                         ticks: {
                             padding: 20,
                             fontSize: 14,
-                            fontFamily: "'Nunito Sans', sans-serif"
+                            fontFamily: "'Inter', sans-serif"
                         }
                     }]
             }

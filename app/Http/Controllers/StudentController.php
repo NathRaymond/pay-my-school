@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Student;
+use App\Models\StudentClass;
 use App\Exports\StudentExport;
 use App\Imports\StudentImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -19,6 +20,7 @@ class StudentController extends Controller
     public function index()
     {
         $data['students'] = Student::orderBy('created_at', 'ASC');
+        $data['classes'] = StudentClass::whereNull('class_id')->get();
         return view('admin.student.view', $data);
     }
 

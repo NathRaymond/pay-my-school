@@ -13,9 +13,9 @@
                     thisMessage =response.message?? "Form submitted successfully";
                     new swal("Well done", response.message, 'success');
                     //reload datatable
-                    loadPageDatatable();
                     $('.btn-close').click();
                     $(this).trigger('reset');
+                    loadPageDatatable();
                 },
                 error: function(xhr, status, error) {
                     // Handle error response

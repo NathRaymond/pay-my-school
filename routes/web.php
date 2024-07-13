@@ -40,5 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/delete-students', [App\Http\Controllers\StudentController::class, 'delete'])->name('delete.student');
             Route::get('/view-details/{id}', [App\Http\Controllers\StudentController::class, 'details'])->name('view.student.details');
         });
+
+        
     });
 });
