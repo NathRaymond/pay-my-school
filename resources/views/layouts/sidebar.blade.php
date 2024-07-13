@@ -33,25 +33,16 @@
                     </ul>
                 </li>
                 <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Academic Session</a></li>
-                <li>
-                    <a class="has-arrow material-ripple" href="#">
-                        <i class="typcn typcn-chart-pie-outline mr-2"></i>
-                        Academic Session
-                    </a>
-                    <ul class="nav-second-level">
-                        <li><a href="charts_flot.html">Flot Chart</a></li>
-                        <li><a href="charts_Js.html">Chart js</a></li>
-                        <li><a href="charts_morris.html">Morris Charts</a></li>
-                        <li><a href="charts_sparkline.html">Sparkline Charts</a></li>
-                        <li><a href="charts_am.html">Am Charts</a></li>
-                        <li><a href="charts_apex.html">Chart Apex</a></li>
-                    </ul>
-                </li>
+                <li><a href="{{ route('admin.school-fees') }}"><i class="typcn typcn-messages mr-2"></i>Manage School Fees</a></li>
+                <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage Invoices</a></li>
+                <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage Payment</a></li>
+             
+
                 <li class="{{ Route::currentRouteName() === 'admin.student.index' ? 'mm-active' : '' }}"><a href="{{ route('admin.student.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage Students</a></li>
                 <li>
                     <a class="has-arrow material-ripple" href="#">
                         <i class="typcn typcn-mail mr-2"></i>
-                        Mailbox
+                        Manage Student
                     </a>
                     <ul class="nav-second-level">
                         <li><a href="mailbox.html">Mailbox</a></li>

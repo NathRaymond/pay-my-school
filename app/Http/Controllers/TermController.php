@@ -14,7 +14,7 @@ class TermController extends Controller
             $acc= Term::where('school_id',auth()->user()->school_id)->orderBy('description', 'DESC')->get();
             return response()->json($acc);
         }
-        return view('admin.academic_Term');
+        return view('admin.academic_term');
     }
 
     public function create(Request $request)

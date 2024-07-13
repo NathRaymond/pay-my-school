@@ -1,10 +1,13 @@
 <?php
 // use Jenssegers\Agent\Facades\Agent;
+
+use App\Models\AcademicSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\ApplicationApprover;
+use App\Models\Term;
 use GuzzleHttp\Client;
 
 function formatPhoneNumber($phoneNumber)
@@ -158,6 +161,10 @@ function generate_uuid()
     return \Ramsey\Uuid\Uuid::uuid1()->toString();
 }
 
+function schooldId(){
+    return auth()->user()->school_id;
+}
+
 
 function hasConsecutiveDuplicates($array)
 {
@@ -218,32 +225,13 @@ function saveApproval($application, $action, $user)
     ]);
 }
 
-function generate_token()
-{
-    $client = new Client();
-    $key = env('QOREID_API_KEY');
-    $secret = env('QOREID_SECRET_KEY');
-    try {
-        $response = $client->request('POST', 'https://api.qoreid.com/token', [
-            'body' => '{"clientId":"' . $key . '","secret":"' . $secret . '"}',
-            'headers' => [
-                'accept' => 'text/plain',
-                'content-type' => 'application/json',
-            ],
-        ]);
-
-        $response = json_decode($response->getBody(), true);
-        return [
-            'token' => $response['accessToken'],
-        ];
-
-    } catch (\Exception $e) {
-        return [
-            'message' => 'Something went wrong with generating token',
-            'error' => $e->getMessage(),
-        ];
-    }
-
-}
 
 
+function currentSchoolSession(){
+    $currentSession = AcademicSession::where('school_id', auth()->user()->school_id)->where('active', 1)->first();
+    return $currentSession;
+ }
+function currentSchoolTerm(){
+    $currentTerm = Term::where('school_id', auth()->user()->school_id)->where('active', 1)->first();
+    return $currentTerm;
+ }

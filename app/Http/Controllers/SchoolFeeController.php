@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SchoolFee;
+use App\Models\StudentClass;
 use Illuminate\Http\Request;
 
 class SchoolFeeController extends Controller
@@ -12,9 +13,15 @@ class SchoolFeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+
+            $schoolFees = SchoolFee::where('school_id', auth()->user()->school_id)->where('session_id',currentSchoolSession()->id)->get();
+            return response()->json($schoolFees);
+        }
+        $data['classes'] = StudentClass::whereNull('class_id')->get();
+        return view('admin.school-fee',$data);
     }
 
     /**

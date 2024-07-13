@@ -14,6 +14,8 @@ use App\Http\Controllers\StudentController;
 */
 
 use App\Http\Controllers\AcademicSessionController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\SchoolFeeController;
 use App\Http\Controllers\TermController;
 
 Auth::routes();
@@ -39,6 +41,13 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/print', [App\Http\Controllers\StudentController::class, 'print'])->name('print.student');
             Route::get('/delete-students', [App\Http\Controllers\StudentController::class, 'delete'])->name('delete.student');
             Route::get('/view-details/{id}', [App\Http\Controllers\StudentController::class, 'details'])->name('view.student.details');
+        });
+
+        Route::group(['prefix' => 'payment'], function () {
+            Route::get('/', [InvoiceController::class, 'index'])->name('admin.payment-report');
+            Route::get('/invoices', [InvoiceController::class, 'index'])->name('admin.invoices');
+            Route::get('/invoice-breakdown', [InvoiceController::class, 'show'])->name('admin.invoice-breakdown');
+            Route::get('/school-fees', [SchoolFeeController::class, 'index'])->name('admin.school-fees');
         });
 
         
