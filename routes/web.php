@@ -17,6 +17,7 @@ use App\Http\Controllers\AcademicSessionController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\SchoolFeeController;
 use App\Http\Controllers\TermController;
+use App\Http\Controllers\ClassesController;
 
 Auth::routes();
 
@@ -53,6 +54,17 @@ Route::group(['middleware' => ['auth']], function () {
 
         });
 
-        
+        // class module
+        Route::group(['prefix' => 'classes'], function () {
+            Route::get('/', [ClassesController::class, 'index'])->name('admin.class.index');
+            Route::post('/create', [ClassesController::class, 'create'])->name('admin.create.class');
+            Route::get('/get-sub-classes', [ClassesController::class, 'getSubClasses'])->name('get.sub.classes');
+        });
+        //  subclass module
+        Route::group(['prefix' => 'sub-classes'], function () {
+            Route::get('/', [ClassesController::class, 'subClassIndex'])->name('admin.subclass.index');
+            Route::post('/create', [ClassesController::class, 'createSubClass'])->name('admin.create.sub.class');
+        });
+
     });
 });
