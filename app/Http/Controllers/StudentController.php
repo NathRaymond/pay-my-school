@@ -19,7 +19,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $data['students'] = Student::orderBy('created_at', 'ASC');
+        $data['students'] = Student::where('school_id', auth()->user()->school_id)->orderBy('created_at', 'ASC')->get();
         $data['classes'] = StudentClass::whereNull('class_id')->get();
         return view('admin.student.view', $data);
     }
@@ -111,11 +111,11 @@ class StudentController extends Controller
         } catch (\Exception $exception) {
             DB::rollback();
             $errorCode = $exception->errorInfo[1] ?? $exception;
-            // dd($errorCode,$exception->getMessage());
+            // dd($errorCode,$exception->getMessage(),$exception->errorInfo[2]);
             if (is_int($errorCode)) {
                 return api_request_response(
                     'error',
-                    $errorCode,
+                    $exception->errorInfo[2],
                     bad_response_status_code()
                 );
             } else {

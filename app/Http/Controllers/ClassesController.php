@@ -92,9 +92,11 @@ class ClassesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function getSubClasses(Request $request)
     {
-        //
+       // dd($request->id);
+       $pp['data'] = $info = StudentClass::where('class_id', $request->id)->get();
+       return json_encode($pp);
     }
 
     /**

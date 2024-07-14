@@ -40,6 +40,7 @@
                         <table id="example" class="table display table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>S/N</th>
                                     <th>Name</th>
                                     <th>Class</th>
                                     <th>Sub Class</th>
@@ -52,12 +53,16 @@
                             <tbody>
                                 @foreach ($students as $student)
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>{{ $loop->iteration }}</th>
+                                        <th>{{ $student->last_name }} {{ $student->first_name }}</th>
+                                        <th>{{ $student->class->name ?? "" }}</th>
+                                        <th>{{ $student->sub->name ?? "" }}</th>
+                                        <th>{{ $student->term->description ?? "" }}</th>
+                                        <th>{{ $student->session->description ?? "" }}</th>
+                                        <td>
+                                            <a href="#" class="btn btn-success-soft btn-sm mr-1"><i class="far fa-eye"></i></a>
+                                            <a href="#" class="btn btn-danger-soft btn-sm"><i class="far fa-trash-alt"></i></a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -74,14 +79,14 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form id="addNewVendor" method="post">
+                        <form id="uploadStudent" method="post">
                             @csrf
                             <div class="modal-body">
                                 <input type="hidden" name="user_type" value="Vendor">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1" class="font-weight-600">Select Class</label>
-                                    <select class="form-control">
-                                        <option>Select Option</option>
+                                    <select class="form-control categoryChange" required name="class_id">
+                                        <option>Select Class</option>
                                         @foreach ($classes as $class)
                                         <option value="{{ $class->id }}">{{ $class->name }}</option>
                                         @endforeach
@@ -89,7 +94,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1" required class="font-weight-600">Select Sub Class</label>
-                                    <select class="form-control">
+                                    <select class="form-control insertSubCategory" name="sub_class_id">
                                         <option>Select Option</option>
                                     </select>
                                 </div>
@@ -119,5 +124,65 @@
 
 
 @include('layouts.datatable-scripts')
+<script>
+    $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
+
+        $(".categoryChange").on("change", function(e) {
+            $(".insertSubCategory").empty()
+            var id = $(this).val();
+            $.ajax({
+                url: '{{ route('get.sub.classes') }}?id=' + id,
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    var len = 0;
+                    len = response['data'].length;
+
+                    for (var i = 0; i < len; i++) {
+                        var id = response['data'][i].id;
+                        var name = response['data'][i].name;
+                        var option = "<option value='" + id + "'>" + name + "</option>";
+                        $(".insertSubCategory").append(option);
+                    }
+                    $(".insertSubCategory").prepend(
+                        "<option value='' selected='selected'>Choose Sub Class</option>"
+                    );
+                }
+            });
+        });
+
+        $("#uploadStudent").on('submit', async function(e) {
+            e.preventDefault();
+            {{--  preLoader.show();  --}}
+            var form = e.target;
+            var formData = new FormData(form);
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('upload.student.record') }}",
+                data: formData,
+                dataType: 'json',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    new swal("Good Job", response.message, "success");
+                    // preLoader.hide();
+                    // $('#productForm').trigger("reset");
+                    window.location.reload()
+                },
+                error: function(data) {
+                    // console.log(data)
+                    //  preLoader.hide();
+                    new swal("Opss", data.responseJSON.message, "error");
+                }
+            })
+        });
+    })
+</script>
 @endsection
