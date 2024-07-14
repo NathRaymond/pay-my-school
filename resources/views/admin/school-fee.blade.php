@@ -38,6 +38,12 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="font-weight-600"></label>
+                                    <button class="btn btn-success form-control mt-2">Fetch</button>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -51,10 +57,10 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="fs-17 font-weight-600 mb-0">Student Fees</h6>
+                                <h6 class="fs-17 font-weight-600 mb-0">School Fees</h6>
                             </div>
                             <div class="text-right">
-                                <a href="{{ route('download.student.excel') }}"
+                                <a href="{{ route('download-school-fee-template') }}"
                                     class="btn btn-success rounded-pill w-100p btn-sm mr-1">Download Template</a>
                                 <button type="button" class="btn btn-success rounded-pill w-100p btn-sm mr-1"
                                     data-toggle="modal" data-target="#exampleModal1">Upload School Fees</button>
@@ -95,7 +101,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title font-weight-600" id="exampleModalLabel4">Upload Student Record
+                                    <h5 class="modal-title font-weight-600" id="exampleModalLabel4">Upload School Fee
                                     </h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>

@@ -48,6 +48,9 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/invoices', [InvoiceController::class, 'index'])->name('admin.invoices');
             Route::get('/invoice-breakdown', [InvoiceController::class, 'show'])->name('admin.invoice-breakdown');
             Route::get('/school-fees', [SchoolFeeController::class, 'index'])->name('admin.school-fees');
+            Route::get('/download-school-fee-template', [SchoolFeeController::class, 'downloadExcel'])->name('download-school-fee-template');
+            Route::post('/upload-school-fees', [SchoolFeeController::class, 'uploadSchoolFee'])->name('upload-school-fee');
+
         });
 
         
