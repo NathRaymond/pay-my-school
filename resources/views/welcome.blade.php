@@ -83,7 +83,7 @@
                 <div
                     class="card-header card-header-info card-header-icon position-relative border-0 text-right px-3 py-0">
                     <div class="card-icon d-flex align-items-center justify-content-center">
-                        <i class="fab fa-twitter"></i>
+                        <i class="typcn typcn-home-outline"></i>
                     </div>
                     <p class="card-category text-uppercase fs-10 font-weight-bold text-muted">Outstanding</p>
                     <h3 class="card-title fs-15 font-weight-bold">
