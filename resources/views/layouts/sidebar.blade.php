@@ -23,14 +23,14 @@
             <ul class="metismenu">
                 <li class="nav-label">Main Menu</li>
                 <li >
-                    <a class="has-arrow material-ripple" href="#">
+                    <a class="" href="/">
                         <i class="typcn typcn-home-outline mr-2"></i>
                         Dashboard
                     </a>
-                    <ul class="nav-second-level">
+                    <!-- <ul class="nav-second-level">
                         <li ><a href="index.html">Default</a></li>
                         <li><a href="dashboard_two.html">Dashboard Two</a></li>
-                    </ul>
+                    </ul> -->
                 </li>
                 <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Academic Session</a></li>
                 <li><a href="{{ route('admin.school-fees') }}"><i class="typcn typcn-messages mr-2"></i>Manage School Fees</a></li>

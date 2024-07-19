@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Student;
+use App\Models\user;
+use App\Models\Invoice;
+use App\Models\InvoiceBreakdown;
+use App\Models\AcademicSession;
 use App\Http\Controllers\StudentController;
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +28,29 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', function () {
-        return view('welcome');
+        $data['user'] = Auth::user();
+        $data['totalstudent'] = Student::count();
+        $data['currentsession'] = AcademicSession::where('active', true)->first();
+
+        $data['currentTermIncome'] = 0;
+        $data['currentSessionIncome'] = 0;
+        $data['currentTermOutstanding'] = 0;
+
+        if ($data['currentsession']) {
+            $data['currentTermInvoices'] = Invoice::where('term_id', $data['currentsession']->current_term_id);
+            $data['currentTermIncome'] = Invoice::where('term_id', $data['currentsession']->current_term_id)->sum('total_amount');
+            $data['currentTermIncome'] = Invoice::where('term_id', $data['currentsession']->id)->sum('total_amount');
+            
+             // Calculate outstanding amount for the current term
+            //  $data['totalAmount'] = $data['currentTermInvoices']->sum('total_amount');
+            //  $data['paidAmount'] = $data['currentTermInvoices']->sum('paid_amount');
+            //  $data['currentTermOutstanding'] = $totalAmount - $paidAmount;
+
+
+                // Calculate outstanding amount for the current term
+        $data['currentTermOutstanding'] = InvoiceBreakdown::where('term_id', $data['currentsession']->current_term_id)->where('payment_status', 'unpaid')->sum('payment_status');
+        }
+        return view('welcome', $data);
     });
     Route::group(['prefix' => 'admin'], function () {
         Route::resource('academic_session', AcademicSessionController::class);
