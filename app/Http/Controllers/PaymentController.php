@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function invoiceIndex(){
+    public function invoiceIndex()
+    {
         $data['Invoice'] = Invoice::where('school_id', auth()->user()->school_id)->get();
-        
     }
 }
