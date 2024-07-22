@@ -9,16 +9,14 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use App\Models\Student;
+use App\Models\SchoolFee;
 use App\Models\Parents;
-use App\Models\AcademicSession;
-use App\Models\Term;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
-class StudentImport implements ToModel, WithBatchInserts, WithHeadingRow, WithChunkReading, WithValidation
+class SchoolFeeImport implements ToModel, WithBatchInserts, WithHeadingRow, WithChunkReading, WithValidation
 {
     protected $class;
     protected $subclass;
@@ -36,42 +34,42 @@ class StudentImport implements ToModel, WithBatchInserts, WithHeadingRow, WithCh
     }
     public function rules(): array
     {
+      
         return [
-            'first_name' => 'required|max:500',
-            'last_name' => 'required|max:500',
-            'email' => 'nullable|email',
+            'description' => 'required|max:500',
+            'amount' => 'required|numeric|max:500'          
         ];
     }
 
     public function customValidationMessages()
     {
         return [
-            'first_name.required' => 'First name is required!',
-            'last_name.required' => 'Last name is required!',
+            'description.required' => 'First name is required!',
+           
         ];
     }
 
     public function model(array $row)
     {
-        $term = Term::where('school_id', auth()->user()->school_id)->where('active', 1)->first();
-        $session = AcademicSession::where('active', 1)->where('school_id', auth()->user()->school_id)->first();
-        return new Student([
+       
+      
+        // dd($this->subclass);
+        return new SchoolFee([
             'school_id' => auth()->user()->school_id,
             'first_name' => $row["first_name"],
             'last_name' => $row["last_name"],
-            'other_name' => $row["other_names"],
+            'other_names' => $row["other_names"],
             'email' => $row["email"],
-            'class_id' => $this->class,
-            'sub_class_id' => $this->subclass,
-            'term_id' => $term->id ?? NULL,
-            'session_id' => $session->id ?? NULL,
+            'class' => $this->class,
+            'sub_class' => $this->subclass,
             'gender' => $row["gender"],
-            'date_of_birth' =>  $row["date_of_birth"],
-            'phone' => $row["parent_phone_number"],
+            'parent_id' => $parentId,
+            'date_of_birth' => $date,
+            'phone' => $thisNumber,//$row["parent_phone_number"],
             'address' => $row["address"],
-            'admission_number' => $row["admission_number"],
-            'country' => $row["nationality"],
-            'state' => $row["state_of_origin"],
+            'student_id' => $row["admission_number"],
+            'nationality' => $row["nationality"],
+            'state_of_origin' => $row["state_of_origin"],
             'local_government_area' => $row["local_government_area"],
         ]);
 

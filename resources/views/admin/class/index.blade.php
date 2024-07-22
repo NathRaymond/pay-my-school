@@ -7,14 +7,14 @@
     <nav aria-label="breadcrumb" class="col-sm-4 order-sm-last mb-3 mb-sm-0 p-0 ">
         <ol class="breadcrumb d-inline-flex font-weight-600 fs-13 bg-white mb-0 float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Students</li>
+            <li class="breadcrumb-item active">Classes</li>
         </ol>
     </nav>
     <div class="col-sm-8 header-title p-0">
         <div class="media">
             <div class="header-icon text-success mr-3"><i class="typcn typcn-spiral"></i></div>
             <div class="media-body">
-                <h1 class="font-weight-bold">Students</h1>
+                <h1 class="font-weight-bold">Classes</h1>
                 <small>From now on you will start your activities.</small>
             </div>
         </div>
@@ -27,11 +27,11 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="fs-17 font-weight-600 mb-0">Student Records</h6>
+                            <h6 class="fs-17 font-weight-600 mb-0">Class Records</h6>
                         </div>
                         <div class="text-right">
-                            <a href="{{ route('download.student.excel') }}" class="btn btn-success rounded-pill w-100p btn-sm mr-1" >Download Student Template</a>
-                            <button type="button" class="btn btn-success rounded-pill w-100p btn-sm mr-1" data-toggle="modal" data-target="#exampleModal1">Upload Student</button>
+                            {{--  <a href="{{ route('download.student.excel') }}" class="btn btn-success rounded-pill w-100p btn-sm mr-1" >Download Student Template</a>  --}}
+                            <button type="button" class="btn btn-success rounded-pill w-100p btn-sm mr-1" data-toggle="modal" data-target="#exampleModal1">Add New Class</button>
                         </div>
                     </div>
                 </div>
@@ -41,24 +41,18 @@
                             <thead>
                                 <tr>
                                     <th>S/N</th>
-                                    <th>Name</th>
-                                    <th>Class</th>
-                                    <th>Sub Class</th>
-                                    <th>Term</th>
-                                    <th>Session</th>
+                                    <th>Description</th>
+                                    <th>Date Created</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                @foreach ($students as $student)
+                                @foreach ($classes as $class)
                                     <tr>
                                         <th>{{ $loop->iteration }}</th>
-                                        <th>{{ $student->last_name }} {{ $student->first_name }}</th>
-                                        <th>{{ $student->class->name ?? "" }}</th>
-                                        <th>{{ $student->sub->name ?? "" }}</th>
-                                        <th>{{ $student->term->description ?? "" }}</th>
-                                        <th>{{ $student->session->description ?? "" }}</th>
+                                        <th>{{ $class->name }}</th>
+                                        <th>{{ $class->created_at }}</th>
                                         <td>
                                             <a href="#" class="btn btn-success-soft btn-sm mr-1"><i class="far fa-eye"></i></a>
                                             <a href="#" class="btn btn-danger-soft btn-sm"><i class="far fa-trash-alt"></i></a>
@@ -74,39 +68,23 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title font-weight-600" id="exampleModalLabel4">Upload Student Record</h5>
+                            <h5 class="modal-title font-weight-600" id="exampleModalLabel4">Add New Class</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form id="uploadStudent" method="post">
+                        <form id="addNewClass" method="post">
                             @csrf
                             <div class="modal-body">
-                                <input type="hidden" name="user_type" value="Vendor">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1" class="font-weight-600">Select Class</label>
-                                    <select class="form-control categoryChange" required name="class_id">
-                                        <option>Select Class</option>
-                                        @foreach ($classes as $class)
-                                        <option value="{{ $class->id }}">{{ $class->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1" required class="font-weight-600">Select Sub Class</label>
-                                    <select class="form-control insertSubCategory" name="sub_class_id">
-                                        <option>Select Option</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1" class="font-weight-600">Choose File</label>
-                                    <input type="file" class="form-control" required name="file" id="exampleInputEmail1"
-                                        aria-describedby="emailHelp" placeholder="Enter email">
+                                    <label for="exampleInputEmail1" class="font-weight-600">Description</label>
+                                    <input type="text" class="form-control" required name="name" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" placeholder="enter class description e.g primary one">
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger " data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-success">Save changes</button>
+                                <button type="submit" class="btn btn-success">Save Data</button>
                             </div>
                         </form>
                     </div>
@@ -146,25 +124,25 @@
 
                     for (var i = 0; i < len; i++) {
                         var id = response['data'][i].id;
-                        var name = response['data'][i].name;
+                        var name = response['data'][i].description;
                         var option = "<option value='" + id + "'>" + name + "</option>";
                         $(".insertSubCategory").append(option);
                     }
                     $(".insertSubCategory").prepend(
-                        "<option value='' selected='selected'>Choose Sub Class</option>"
+                        "<option value='' selected='selected'>Choose Sub Category</option>"
                     );
                 }
             });
         });
 
-        $("#uploadStudent").on('submit', async function(e) {
+        $("#addNewClass").on('submit', async function(e) {
             e.preventDefault();
             {{--  preLoader.show();  --}}
             var form = e.target;
             var formData = new FormData(form);
             $.ajax({
                 type: 'POST',
-                url: "{{ route('upload.student.record') }}",
+                url: "{{ route('admin.create.class') }}",
                 data: formData,
                 dataType: 'json',
                 cache: false,

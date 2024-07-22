@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Student;
+use App\Models\user;
+use App\Models\Invoice;
+use App\Models\InvoiceBreakdown;
+use App\Models\AcademicSession;
 use App\Http\Controllers\StudentController;
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +23,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\SchoolFeeController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\ClassesController;
 
 Auth::routes();
 
@@ -40,7 +46,29 @@ Route::get('/failure', function () {
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', function () {
-        return view('welcome');
+        $data['user'] = Auth::user();
+        $data['totalstudent'] = Student::count();
+        $data['currentsession'] = AcademicSession::where('active', true)->first();
+
+        $data['currentTermIncome'] = 0;
+        $data['currentSessionIncome'] = 0;
+        $data['currentTermOutstanding'] = 0;
+
+        if ($data['currentsession']) {
+            $data['currentTermInvoices'] = Invoice::where('term_id', $data['currentsession']->current_term_id);
+            $data['currentTermIncome'] = Invoice::where('term_id', $data['currentsession']->current_term_id)->sum('total_amount');
+            $data['currentTermIncome'] = Invoice::where('term_id', $data['currentsession']->id)->sum('total_amount');
+            
+             // Calculate outstanding amount for the current term
+            //  $data['totalAmount'] = $data['currentTermInvoices']->sum('total_amount');
+            //  $data['paidAmount'] = $data['currentTermInvoices']->sum('paid_amount');
+            //  $data['currentTermOutstanding'] = $totalAmount - $paidAmount;
+
+
+                // Calculate outstanding amount for the current term
+        $data['currentTermOutstanding'] = InvoiceBreakdown::where('term_id', $data['currentsession']->current_term_id)->where('payment_status', 'unpaid')->sum('payment_status');
+        }
+        return view('welcome', $data);
     });
 
     Route::group(['prefix' => 'admin'], function () {
@@ -67,6 +95,25 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/invoices', [InvoiceController::class, 'index'])->name('admin.invoices');
             Route::get('/invoice-breakdown', [InvoiceController::class, 'show'])->name('admin.invoice-breakdown');
             Route::get('/school-fees', [SchoolFeeController::class, 'index'])->name('admin.school-fees');
+            Route::get('/download-school-fee-template', [SchoolFeeController::class, 'downloadExcel'])->name('download-school-fee-template');
+            Route::post('/upload-school-fees', [SchoolFeeController::class, 'uploadSchoolFee'])->name('upload-school-fee');
+
         });
+
+        // class module
+        Route::group(['prefix' => 'classes'], function () {
+            Route::get('/', [ClassesController::class, 'index'])->name('admin.class.index');
+            Route::post('/create', [ClassesController::class, 'create'])->name('admin.create.class');
+            Route::get('/get-sub-classes', [ClassesController::class, 'getSubClasses'])->name('get.sub.classes');
+        });
+        //  subclass module
+        Route::group(['prefix' => 'sub-classes'], function () {
+            Route::get('/', [ClassesController::class, 'subClassIndex'])->name('admin.subclass.index');
+            Route::post('/create', [ClassesController::class, 'createSubClass'])->name('admin.create.sub.class');
+        });
+<<<<<<< HEAD
+=======
+
+>>>>>>> c4d352f1c8f9280ff64bf78e1e55c17f999ff934
     });
 });

@@ -23,31 +23,30 @@
             <ul class="metismenu">
                 <li class="nav-label">Main Menu</li>
                 <li >
-                    <a class="has-arrow material-ripple" href="#">
+                    <a class="" href="/">
                         <i class="typcn typcn-home-outline mr-2"></i>
                         Dashboard
                     </a>
-                    <ul class="nav-second-level">
+                    <!-- <ul class="nav-second-level">
                         <li ><a href="index.html">Default</a></li>
                         <li><a href="dashboard_two.html">Dashboard Two</a></li>
-                    </ul>
+                    </ul> -->
                 </li>
                 <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Academic Session</a></li>
                 <li><a href="{{ route('admin.school-fees') }}"><i class="typcn typcn-messages mr-2"></i>Manage School Fees</a></li>
                 <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage Invoices</a></li>
                 <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage Payment</a></li>
-             
+
 
                 <li class="{{ Route::currentRouteName() === 'admin.student.index' ? 'mm-active' : '' }}"><a href="{{ route('admin.student.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage Students</a></li>
                 <li>
                     <a class="has-arrow material-ripple" href="#">
                         <i class="typcn typcn-mail mr-2"></i>
-                        Manage Student
+                        Manage Classes
                     </a>
                     <ul class="nav-second-level">
-                        <li><a href="mailbox.html">Mailbox</a></li>
-                        <li><a href="mailbox_details.html">Mailbox Details</a></li>
-                        <li><a href="compose.html">Compose</a></li>
+                        <li class="{{ Route::currentRouteName() === 'admin.class.index' ? 'mm-active' : '' }}"><a href="{{ route('admin.class.index') }}">Classes</a></li>
+                        <li class="{{ Route::currentRouteName() === 'admin.subclass.index' ? 'mm-active' : '' }}"><a href="{{ route('admin.subclass.index') }}">Sub Classes</a></li>
                     </ul>
                 </li>
                 <li>
