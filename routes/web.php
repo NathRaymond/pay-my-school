@@ -111,9 +111,5 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/', [ClassesController::class, 'subClassIndex'])->name('admin.subclass.index');
             Route::post('/create', [ClassesController::class, 'createSubClass'])->name('admin.create.sub.class');
         });
-<<<<<<< HEAD
-=======
-
->>>>>>> c4d352f1c8f9280ff64bf78e1e55c17f999ff934
     });
 });
