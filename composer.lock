@@ -4253,22 +4253,6 @@
         },
         {
             "name": "symfony/css-selector",
-<<<<<<< HEAD
-            "version": "v7.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/css-selector.git",
-                "reference": "1c7cee86c6f812896af54434f8ce29c8d94f9ff4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/1c7cee86c6f812896af54434f8ce29c8d94f9ff4",
-                "reference": "1c7cee86c6f812896af54434f8ce29c8d94f9ff4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.2"
-=======
             "version": "v6.4.8",
             "source": {
                 "type": "git",
@@ -4283,7 +4267,6 @@
             },
             "require": {
                 "php": ">=8.1"
->>>>>>> c4d352f1c8f9280ff64bf78e1e55c17f999ff934
             },
             "type": "library",
             "autoload": {
