@@ -34,16 +34,7 @@
                         <h3 class="fs-24">Sign into your account!</h3>
                         <p class="text-muted text-center mb-0">Nice to see you! Please log in with your account.</p>
                     </div>
-                    <a class="btn btn-linkedin btn-block bg-white text-left font-weight-normal position-relative mb-3"
-                        href="#">
-                        <span>Sign up with LinkedIn</span>
-                    </a>
-                    <a class="btn  btn-google btn-block bg-white text-left font-weight-normal position-relative mb-3"
-                        href="#">
-                        <span>Sign up with Google</span>
-                    </a>
-                    <p class="text-muted text-center">We wont post anything without your permission and your personal
-                        details are kept private</p>
+                  
                     <div class="divider font-weight-bold text-uppercase text-dark d-table text-center my-3">Or</div>
                     <form action="{{ route('login') }}" method="post">
                         @csrf
@@ -65,7 +56,7 @@
                     </form>
                 </div>
                 <div class="bottom-text text-center my-3">
-                    Don't have an account? <a href="{{ route('school.registration') }}" class="font-weight-500">Sign Up</a><br>
+                    Don't have an account? <a href="{{ route('register.form') }}" class="font-weight-500">Sign Up</a><br>
                     Forget <a href="forget_password.html" class="font-weight-500">Password ?</a>
                 </div>
             </div>

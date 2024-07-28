@@ -27,10 +27,13 @@ use App\Http\Controllers\ClassesController;
 
 Auth::routes();
 
-Route::get('/register', [SchoolController::class, 'schoolRegister'])->name('school.registration');
-Route::post('/payment', [SchoolController::class, 'storePayment'])->name('store.payment');
-Route::post('/payment/verify', [SchoolController::class, 'verifyPayment'])->name('verify.payment');
-Route::post('/payment/callback', [SchoolController::class, 'handleCallback'])->name('payment.callback');
+// Route::get('/register', [SchoolController::class, 'schoolRegister'])->name('school.registration');
+// Route::post('/payment', [SchoolController::class, 'storePayment'])->name('store.payment');
+// Route::post('/payment/verify', [SchoolController::class, 'verifyPayment'])->name('verify.payment');
+// Route::post('/payment/callback', [SchoolController::class, 'handleCallback'])->name('payment.callback');
+
+Route::get('/register', [SchoolController::class, 'showForm'])->name('register.form');
+Route::post('/payment/verify', [SchoolController::class, 'verifyPayment'])->name('payment.verify');
 
 Route::post('/pay', 'PaymentController@redirectToGateway')->name('pay');
 Route::post('/pay', [App\Http\Controllers\PaymentController::class, 'redirectToGateway'])->name('pay');
@@ -58,15 +61,15 @@ Route::group(['middleware' => ['auth']], function () {
             $data['currentTermInvoices'] = Invoice::where('term_id', $data['currentsession']->current_term_id);
             $data['currentTermIncome'] = Invoice::where('term_id', $data['currentsession']->current_term_id)->sum('total_amount');
             $data['currentTermIncome'] = Invoice::where('term_id', $data['currentsession']->id)->sum('total_amount');
-            
-             // Calculate outstanding amount for the current term
+
+            // Calculate outstanding amount for the current term
             //  $data['totalAmount'] = $data['currentTermInvoices']->sum('total_amount');
             //  $data['paidAmount'] = $data['currentTermInvoices']->sum('paid_amount');
             //  $data['currentTermOutstanding'] = $totalAmount - $paidAmount;
 
 
-                // Calculate outstanding amount for the current term
-        $data['currentTermOutstanding'] = InvoiceBreakdown::where('term_id', $data['currentsession']->current_term_id)->where('payment_status', 'unpaid')->sum('payment_status');
+            // Calculate outstanding amount for the current term
+            $data['currentTermOutstanding'] = InvoiceBreakdown::where('term_id', $data['currentsession']->current_term_id)->where('payment_status', 'unpaid')->sum('payment_status');
         }
         return view('welcome', $data);
     });
@@ -98,7 +101,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/school-fees', [SchoolFeeController::class, 'index'])->name('admin.school-fees');
             Route::get('/download-school-fee-template', [SchoolFeeController::class, 'downloadExcel'])->name('download-school-fee-template');
             Route::post('/upload-school-fees', [SchoolFeeController::class, 'uploadSchoolFee'])->name('upload-school-fee');
-
         });
 
         // class module
