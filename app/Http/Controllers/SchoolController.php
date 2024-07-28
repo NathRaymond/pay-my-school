@@ -38,7 +38,6 @@ class SchoolController extends Controller
         try {
             // Save in school table
             $schoolData = $request->all();
-            // dd($schoolData);
             $school = School::create($schoolData);
 
             $reference = $request->reference;
@@ -58,16 +57,16 @@ class SchoolController extends Controller
                     $userData['school_id'] = $school->id;
                     User::create($userData);
 
-                    return response()->json(['success' => true, 'message' => 'Payment verified and records saved successfully.']);
+                    return redirect()->route('login')->with('success', 'Payment verified and records saved successfully.');
                 } else {
-                    return response()->json(['success' => false, 'message' => 'Payment verification failed: ' . $data['data']['gateway_response']], 400);
+                    return redirect()->route('login')->with('error', 'Payment verification failed: ' . $data['data']['gateway_response']);
                 }
             } else {
-                return response()->json(['success' => false, 'message' => 'Payment verification failed: Unable to reach payment gateway.'], 400);
+                return redirect()->route('login')->with('error', 'Payment verification failed: Unable to reach payment gateway.');
             }
         } catch (\Exception $exception) {
             Log::error('Payment verification error: ' . $exception->getMessage());
-            return response()->json(['success' => false, 'message' => 'An error occurred: ' . $exception->getMessage()], 400);
+            return redirect()->route('login')->with('error', 'An error occurred: ' . $exception->getMessage());
         }
     }
 }
