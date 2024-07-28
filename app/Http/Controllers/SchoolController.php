@@ -10,95 +10,64 @@ use App\Models\School;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Paystack;
 use Yansongda\Pay\Pay;
 
 class SchoolController extends Controller
 {
-    public function schoolRegister(Request $request)
+    public function showForm()
     {
         return view('school.register');
     }
-    public function storePayment(Request $request)
+    public function verifyPayment(Request $request)
     {
-        // Validate the request
         $request->validate([
             'email' => 'required|email|unique:users,email|unique:schools,email',
             'phone' => 'required|unique:users,phone|unique:schools,phone',
             'address' => 'required',
-            's_name' => 'required|string|max:255',
             'name' => 'required|string|max:255',
+            'p_name' => 'required|string|max:255',
             'country' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'lga' => 'required|string|max:255',
+            'reference' => 'required|string',
         ]);
 
-        // Save the payment details
-        $input = $request->all();
-        $payment = School::create($request->all());
+        try {
+            // Save in school table
+            $schoolData = $request->all();
+            // dd($schoolData);
+            $school = School::create($schoolData);
 
-        return response()->json(['success' => true, 'payment' => $payment]);
-    }
+            $reference = $request->reference;
 
-    public function verifyPayment(Request $request)
-    {
-        $reference = $request->reference;
+            // Verify the transaction
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('PAYSTACK_SECRET_KEY')
+            ])->get('https://api.paystack.co/transaction/verify/' . $reference);
 
-        // Verify the transaction
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . env('PAYSTACK_SECRET_KEY')
-        ])->get('https://api.paystack.co/transaction/verify/' . $reference);
+            if ($response->successful()) {
+                $data = $response->json();
 
-        if ($response->successful()) {
-            $data = $response->json();
+                if ($data['data']['status'] === 'success') {
+                    // Save in user table if payment is successful
+                    $userData = $request->all();
+                    $userData['name'] = $request->name;
+                    $userData['school_id'] = $school->id;
+                    User::create($userData);
 
-            if ($data['data']['status'] === 'success') {
-                return response()->json(['success' => true, 'message' => 'Payment verified successfully.']);
-            }
-        }
-
-        return response()->json(['success' => false, 'message' => 'Payment verification failed.']);
-    }
-    public function handleCallback(Request $request)
-    {
-        // Get the payment details from the request
-        $paymentDetails = $request->all();
-
-        // Verify the transaction using the reference from the callback data
-        $reference = $paymentDetails['data']['reference'];
-
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . env('PAYSTACK_SECRET_KEY')
-        ])->get('https://api.paystack.co/transaction/verify/' . $reference);
-
-        if ($response->successful()) {
-            $data = $response->json();
-
-            if ($data['data']['status'] === 'success') {
-                // Payment was successful, update your database as necessary
-                $payment = School::where('reference', $reference)->first();
-                if ($payment) {
-                    $payment->status = 'success';
-                    $payment->save();
+                    return response()->json(['success' => true, 'message' => 'Payment verified and records saved successfully.']);
                 } else {
-                    // If no existing payment, create a new record
-                    School::create([
-                        'name' => $paymentDetails['data']['customer']['first_name'],
-                        'email' => $paymentDetails['data']['customer']['email'],
-                        'address' => $paymentDetails['data']['customer']['address'],
-                        'phone' => $paymentDetails['data']['customer']['phone'],
-                        'amount' => $paymentDetails['data']['amount'] / 100, // Paystack returns amount in kobo
-                        'status' => 'success',
-                        'reference' => $reference,
-                    ]);
+                    return response()->json(['success' => false, 'message' => 'Payment verification failed: ' . $data['data']['gateway_response']], 400);
                 }
-
-                return response()->json(['success' => true, 'message' => 'Callback handled and payment verified successfully.']);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Payment verification failed: Unable to reach payment gateway.'], 400);
             }
+        } catch (\Exception $exception) {
+            Log::error('Payment verification error: ' . $exception->getMessage());
+            return response()->json(['success' => false, 'message' => 'An error occurred: ' . $exception->getMessage()], 400);
         }
-
-        // Payment verification failed
-        return response()->json(['success' => false, 'message' => 'Payment verification failed.']);
     }
 }
