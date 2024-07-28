@@ -57,9 +57,6 @@
                     <div class="panel-header text-center mb-3">
                         <h3 class="fs-24">Sign up for your account!</h3>
                     </div>
-                    {{-- <p class="text-muted text-center">We won't post anything
-                        without your permission and your personal
-                        details are kept private</p> --}}
                     <div class="divider font-weight-bold text-uppercase text-dark d-table text-center my-3">&nbsp;</div>
                     <form id="paymentForm">
                         @csrf
@@ -90,27 +87,38 @@
                                 <div class="form-group">
                                     <select class="form-control" name="country" required>
                                         <option>Select Country</option>
-                                        <option value="Nigeria">Nigeria</option>
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" name="state" class="form-control" placeholder="Enter State"
-                                        required>
+                                    <select class="form-control" name="state" required>
+                                        <option>Select State</option>
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state->id }}">{{ $state->state }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" name="city" class="form-control" placeholder="Enter City"
-                                        required>
+                                    <select class="form-control" name="lga" required>
+                                        <option>Select LGA</option>
+                                        @foreach ($lgas as $lga)
+                                            <option value="{{ $lga->id }}">{{ $lga->local_govt }}</option>
+                                        @endforeach
+                                    </select>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" name="lga" class="form-control" placeholder="Enter LGA"
+                                    <input type="text" name="city" class="form-control" placeholder="Enter City"
                                         required>
                                 </div>
                             </div>
@@ -120,6 +128,7 @@
                                 required>
                         </div>
                         <div class="form-group">
+                            <label class="form-label">Amount</label>
                             <input type="text" name="amount" class="form-control" placeholder="Enter Amount"
                                 required min="0" step="any" id="amount" value="10000" readonly>
                         </div>

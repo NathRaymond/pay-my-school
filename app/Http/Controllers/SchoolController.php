@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\School;
+use App\Models\Country;
+use App\Models\State;
+use App\Models\LGA;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -18,7 +21,10 @@ class SchoolController extends Controller
 {
     public function showForm()
     {
-        return view('school.register');
+        $data['countries'] = Country::all();
+        $data['states'] = State::all();
+        $data['lgas'] = LGA::all();
+        return view('school.register', $data);
     }
     public function verifyPayment(Request $request)
     {
