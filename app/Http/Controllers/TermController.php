@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SchoolFee;
 use App\Models\Term;
 use Illuminate\Http\Request;
 
@@ -84,6 +85,7 @@ class TermController extends Controller
         return redirect()->back()->with(['message' => 'Academic Term activated successfully!']);
 
     }
+
 
 
 

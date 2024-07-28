@@ -76,20 +76,22 @@
                                         <th>Class</th>
                                         <th>Session</th>
                                         <th>Term</th>
-                                        <th>Total Amount</th>
+                                        <th>Total Amount(N)</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    @foreach ($schoolFees as $classFee)
+                                    @foreach ($schoolFees as $key=> $classFee)
                                     <tr>
                                         <th>{{ $loop->iteration }}</th>
                                         <th>{{ $classFee[0]->mystudentClass->name??'' }}</th>
                                         <th>{{ $classFee[0]->SchoolSession->description??"" }}</th>
                                         <th>{{ $classFee[0]->SchoolTerm->description??"" }}</th>
-                                        <th>{{ number_format($classFee->sum('amount'),2)   }}</th>
-                                        <th></th>
+                                        <th class="text-right">{{ number_format($classFee->sum('amount'),2)   }}</th>
+                                        <th>
+                                            <a href="{{ route('admin.school-fees-detail',$key) }}" class="btn btn-success-soft btn-sm mr-1"><i class="far fa-eye"></i></a>
+                                        </th>
                                     </tr>
                                         
                                     @endforeach

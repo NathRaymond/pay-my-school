@@ -141,6 +141,11 @@ class SchoolFeeController extends Controller
         }
     }
     
+
+    public function details($id){
+        $data['schoolFees']= SchoolFee::where('class_id',$id)->get();
+        return view('admin.school-fee-details',$data);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -191,10 +196,12 @@ class SchoolFeeController extends Controller
      * @param  \App\Models\SchoolFee  $schoolFee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SchoolFee $schoolFee)
+    public function update($id)
     {
-        //
+        
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -202,8 +209,10 @@ class SchoolFeeController extends Controller
      * @param  \App\Models\SchoolFee  $schoolFee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SchoolFee $schoolFee)
+    public function destroy(Request $request)
     {
-        //
+        $schoolFee = SchoolFee::find($request->id);
+        $deleteFee = $schoolFee->delete();
+        return redirect()->back()->with('message', 'School Fee deleted successfully');
     }
 }
