@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
@@ -8,111 +9,96 @@ use Illuminate\Support\Facades\DB;
 use App\Models\School;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Paystack;
+use Yansongda\Pay\Pay;
 
 class SchoolController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function schoolRegister(Request $request)
     {
-        //
+        return view('school.register');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+    public function storePayment(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|unique:users,email|unique:schools,email',
+        // Validate the request
+        $request->validate([
+            'email' => 'required|email|unique:users,email|unique:schools,email',
             'phone' => 'required|unique:users,phone|unique:schools,phone',
             'address' => 'required',
+            's_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'lga' => 'required|string|max:255',
         ]);
 
-        if ($validator->fails()) {
-            return respond(false, $validator->errors(), null, 401);
+        // Save the payment details
+        $input = $request->all();
+        $payment = School::create($request->all());
+
+        return response()->json(['success' => true, 'payment' => $payment]);
+    }
+
+    public function verifyPayment(Request $request)
+    {
+        $reference = $request->reference;
+
+        // Verify the transaction
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('PAYSTACK_SECRET_KEY')
+        ])->get('https://api.paystack.co/transaction/verify/' . $reference);
+
+        if ($response->successful()) {
+            $data = $response->json();
+
+            if ($data['data']['status'] === 'success') {
+                return response()->json(['success' => true, 'message' => 'Payment verified successfully.']);
+            }
         }
-        try {
-            DB::beginTransaction();
-            $input = $request->all();
-            // first insert into school registration table
-            $input['slug'] = Str::slug($request->name);
-            $school = School::create($input);
-            $input['school_id'] = $school->id;
-            //$input['user_type'] = "School";
-            // dd($input);
-            $input['password'] = Hash::make("password@321");
-            // insert into user table
-            $user = User::create($input);
-            // lets update the school table user id with the id of the user
-            $school->update(["user_id" => $user->id]);
-            DB::commit();
-            return respond(true, "Registration Successful", $user, 201);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return respond(false, $e->getMessage(), null, 400);
+
+        return response()->json(['success' => false, 'message' => 'Payment verification failed.']);
+    }
+    public function handleCallback(Request $request)
+    {
+        // Get the payment details from the request
+        $paymentDetails = $request->all();
+
+        // Verify the transaction using the reference from the callback data
+        $reference = $paymentDetails['data']['reference'];
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('PAYSTACK_SECRET_KEY')
+        ])->get('https://api.paystack.co/transaction/verify/' . $reference);
+
+        if ($response->successful()) {
+            $data = $response->json();
+
+            if ($data['data']['status'] === 'success') {
+                // Payment was successful, update your database as necessary
+                $payment = School::where('reference', $reference)->first();
+                if ($payment) {
+                    $payment->status = 'success';
+                    $payment->save();
+                } else {
+                    // If no existing payment, create a new record
+                    School::create([
+                        'name' => $paymentDetails['data']['customer']['first_name'],
+                        'email' => $paymentDetails['data']['customer']['email'],
+                        'address' => $paymentDetails['data']['customer']['address'],
+                        'phone' => $paymentDetails['data']['customer']['phone'],
+                        'amount' => $paymentDetails['data']['amount'] / 100, // Paystack returns amount in kobo
+                        'status' => 'success',
+                        'reference' => $reference,
+                    ]);
+                }
+
+                return response()->json(['success' => true, 'message' => 'Callback handled and payment verified successfully.']);
+            }
         }
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\School  $school
-     * @return \Illuminate\Http\Response
-     */
-    public function show(School $school)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\School  $school
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(School $school)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\School  $school
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, School $school)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\School  $school
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(School $school)
-    {
-        //
+        // Payment verification failed
+        return response()->json(['success' => false, 'message' => 'Payment verification failed.']);
     }
 }

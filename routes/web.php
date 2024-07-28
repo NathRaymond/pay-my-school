@@ -22,9 +22,27 @@ use App\Http\Controllers\AcademicSessionController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\SchoolFeeController;
 use App\Http\Controllers\TermController;
+use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\ClassesController;
 
 Auth::routes();
+
+Route::get('/register', [SchoolController::class, 'schoolRegister'])->name('school.registration');
+Route::post('/payment', [SchoolController::class, 'storePayment'])->name('store.payment');
+Route::post('/payment/verify', [SchoolController::class, 'verifyPayment'])->name('verify.payment');
+Route::post('/payment/callback', [SchoolController::class, 'handleCallback'])->name('payment.callback');
+
+Route::post('/pay', 'PaymentController@redirectToGateway')->name('pay');
+Route::post('/pay', [App\Http\Controllers\PaymentController::class, 'redirectToGateway'])->name('pay');
+Route::get('/payment/callback', [App\Http\Controllers\PaymentController::class, 'handleGatewayCallback'])->name('payment');
+
+Route::get('/success', function () {
+    return view('components.success');
+})->name('success');
+
+Route::get('/failure', function () {
+    return view('components.failure');
+})->name('failure');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', function () {
@@ -52,9 +70,10 @@ Route::group(['middleware' => ['auth']], function () {
         }
         return view('welcome', $data);
     });
+
     Route::group(['prefix' => 'admin'], function () {
         Route::resource('academic_session', AcademicSessionController::class);
-        Route::get('activate_academic_session', [AcademicSessionController::class,'activate'])->name('activate_session');
+        Route::get('activate_academic_session', [AcademicSessionController::class, 'activate'])->name('activate_session');
         Route::resource('term', TermController::class);
 
         Route::group(['prefix' => 'student'], function () {
@@ -92,6 +111,5 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/', [ClassesController::class, 'subClassIndex'])->name('admin.subclass.index');
             Route::post('/create', [ClassesController::class, 'createSubClass'])->name('admin.create.sub.class');
         });
-
     });
 });
