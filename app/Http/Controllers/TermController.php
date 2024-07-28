@@ -17,7 +17,7 @@ class TermController extends Controller
         return view('admin.academic_term');
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $input = $request->all();
         //validate Term whether it exist
@@ -31,7 +31,7 @@ class TermController extends Controller
         $input['created_by']= auth()->user()->id;
         $createTerm = Term::create($input);
 
-        return response()->json(['message' => 'New Term added successfully!'], 400);
+        return response()->json(['message' => 'New Term added successfully!'], 200);
 
     }
 
@@ -71,6 +71,18 @@ class TermController extends Controller
             return response()->json(['message' => $exception->getMessage()], 400);
 
         }
+    }
+
+    public function activate(Request $request)
+    {
+        $id = $request->id;
+        $term = Term::where('school_id',auth()->user()->school_id)->where('id', $id)->first();
+        //activate this term and deactivate other term
+        $activateTerm = $term->update(['active' => 1]);
+        //deactivate other sesson
+        $deactivate = Term::where('school_id',auth()->user()->school_id)->where('id', '!=', $id)->update(['active' => 0]);
+        return redirect()->back()->with(['message' => 'Academic Term activated successfully!']);
+
     }
 
 

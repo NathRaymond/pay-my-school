@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\SchoolFeeExport;
+use App\Imports\SchoolFeeImport;
 use App\Models\SchoolFee;
 use App\Models\StudentClass;
 use Illuminate\Http\Request;
@@ -18,12 +19,12 @@ class SchoolFeeController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
 
-            $schoolFees = SchoolFee::where('school_id', auth()->user()->school_id)->where('session_id',currentSchoolSession()->id)->get();
-            return response()->json($schoolFees);
-        }
-        $data['classes'] = StudentClass::whereNull('class_id')->get();
+            $schoolFees = SchoolFee::where('school_id', auth()->user()->school_id)->get();
+            $data['schoolFees'] = $schoolFees->groupBy('class_id');
+            // dd($data);
+            $data['classes'] = StudentClass::whereNull('class_id')->get();
+       
         return view('admin.school-fee',$data);
     }
 
@@ -40,7 +41,7 @@ class SchoolFeeController extends Controller
     }
 
 
-    public function upload(Request $request)
+    public function uploadSchoolFee(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:xls,xlsx',
@@ -58,6 +59,21 @@ class SchoolFeeController extends Controller
                 $errorMessage,
                 bad_response_status_code()
             );
+        }
+
+        if(!currentSchoolSession()){
+            return api_request_response(
+                'error',
+                'Kindly set the current academic session',
+                bad_response_status_code()
+            );  
+        }
+        if(!currentSchoolTerm()){
+            return api_request_response(
+                'error',
+                'Kindly set the current term',
+                bad_response_status_code()
+            );  
         }
         $input = $request->all();
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load(request()->file('file'));
@@ -79,13 +95,13 @@ class SchoolFeeController extends Controller
         // dd($subclass);
         try {
             DB::beginTransaction();
-            \Excel::import(new SchoolFeeImport($class, $subclass), request()->file('file'));
+            \Excel::import(new SchoolFeeImport($class), request()->file('file'));
             DB::commit();
             return api_request_response(
                 "ok",
                 "Import successful!!",
                 success_status_code(),
-                $countdata
+                []
             );
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             DB::rollback();

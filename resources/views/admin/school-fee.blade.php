@@ -73,25 +73,26 @@
                                 <thead>
                                     <tr>
                                         <th>SN</th>
-                                        <th>Description</th>
                                         <th>Class</th>
-                                        <th>Sub Class</th>
-                                        <th>Term</th>
                                         <th>Session</th>
-                                        <th>Amount</th>
+                                        <th>Term</th>
+                                        <th>Total Amount</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    {{-- <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr> --}}
+                                    @foreach ($schoolFees as $classFee)
+                                    <tr>
+                                        <th>{{ $loop->iteration }}</th>
+                                        <th>{{ $classFee[0]->mystudentClass->name??'' }}</th>
+                                        <th>{{ $classFee[0]->SchoolSession->description??"" }}</th>
+                                        <th>{{ $classFee[0]->SchoolTerm->description??"" }}</th>
+                                        <th>{{ number_format($classFee->sum('amount'),2)   }}</th>
+                                        <th></th>
+                                    </tr>
+                                        
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -107,13 +108,13 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form id="addNewVendor" method="post">
+                                <form  id="uploadSchoolFees" enctype="multipart/form-data" method="post">
                                     @csrf
                                     <div class="modal-body">
                                         <input type="hidden" name="user_type" value="Vendor">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1" class="font-weight-600">Select Class</label>
-                                            <select class="form-control">
+                                            <select class="form-control" name="class_id" required>
                                                 <option>Select Option</option>
                                                 @foreach ($classes as $class)
                                                     <option value="{{ $class->id }}">{{ $class->name }}</option>
@@ -129,14 +130,13 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1" class="font-weight-600">Choose File</label>
-                                            <input type="file" class="form-control" required name="file"
-                                                id="exampleInputEmail1" aria-describedby="emailHelp"
-                                                placeholder="Enter email">
+                                            <input type="file" class="form-control" required name="file" accept=".xls,.xlsx"
+                                                >
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger " data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-success">Save changes</button>
+                                        <button type="submit" class="btn btn-success">Upload</button>
                                     </div>
                                 </form>
                             </div>
@@ -151,4 +151,64 @@
 
 @section('script')
     @include('layouts.datatable-scripts')
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+    
+    
+            $(".categoryChange").on("change", function(e) {
+                $(".insertSubCategory").empty()
+                var id = $(this).val();
+                $.ajax({
+                    url: '{{ route('get.sub.classes') }}?id=' + id,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(response) {
+                        var len = 0;
+                        len = response['data'].length;
+    
+                        for (var i = 0; i < len; i++) {
+                            var id = response['data'][i].id;
+                            var name = response['data'][i].name;
+                            var option = "<option value='" + id + "'>" + name + "</option>";
+                            $(".insertSubCategory").append(option);
+                        }
+                        $(".insertSubCategory").prepend(
+                            "<option value='' selected='selected'>Choose Sub Class</option>"
+                        );
+                    }
+                });
+            });
+    
+            $("#uploadSchoolFees").on('submit', async function(e) {
+                e.preventDefault();                
+                var form = e.target;
+                var formData = new FormData(form);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('upload-school-fee') }}",
+                    data: formData,
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        new swal("Good Job", response.message, "success");
+                        // preLoader.hide();
+                        // $('#productForm').trigger("reset");
+                        window.location.reload()
+                    },
+                    error: function(data) {
+                        // console.log(data)
+                        //  preLoader.hide();
+                        new swal("Opss", data.responseJSON.message, "error");
+                    }
+                })
+            });
+        })
+    </script>
 @endsection

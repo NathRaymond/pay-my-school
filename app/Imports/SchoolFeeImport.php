@@ -19,12 +19,9 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 class SchoolFeeImport implements ToModel, WithBatchInserts, WithHeadingRow, WithChunkReading, WithValidation
 {
     protected $class;
-    protected $subclass;
-
-    function __construct($class, $subclass)
+    function __construct($class)
     {
         $this->class = $class;
-        $this->subclass = $subclass;
         // dd($this->class, $this->subclass);
         set_time_limit(8000000);
         ini_set('max_execution_time', '5000'); //300 seconds = 5 minutes
@@ -37,40 +34,41 @@ class SchoolFeeImport implements ToModel, WithBatchInserts, WithHeadingRow, With
       
         return [
             'description' => 'required|max:500',
-            'amount' => 'required|numeric|max:500'          
+            'amount' => 'required|numeric'          
         ];
     }
 
     public function customValidationMessages()
     {
         return [
-            'description.required' => 'First name is required!',
+            'description.required' => 'Description is required!',
+            'amount.required' => 'Amount is required!',
+            'amount.numeric' => 'Amount must be a number!',
            
         ];
     }
 
     public function model(array $row)
     {
-       
-      
-        // dd($this->subclass);
+        //let's check if record exist before, if exist, don't go
+        $existingSchoolFee = SchoolFee::where([['school_id',auth()->user()->school_id],
+        ['description',$row["description"]],['session_id', currentSchoolSession()->id],['term_id', currentSchoolTerm()->id],
+        ['class_id', $this->class]       
+        ])->first();
+        if($existingSchoolFee){
+            $description= $row["description"];
+            throw new \Exception("You have uploaded a school fee named: $description for this class", 1);
+            
+        }
+            
         return new SchoolFee([
             'school_id' => auth()->user()->school_id,
-            'first_name' => $row["first_name"],
-            'last_name' => $row["last_name"],
-            'other_names' => $row["other_names"],
-            'email' => $row["email"],
-            'class' => $this->class,
-            'sub_class' => $this->subclass,
-            'gender' => $row["gender"],
-            'parent_id' => $parentId,
-            'date_of_birth' => $date,
-            'phone' => $thisNumber,//$row["parent_phone_number"],
-            'address' => $row["address"],
-            'student_id' => $row["admission_number"],
-            'nationality' => $row["nationality"],
-            'state_of_origin' => $row["state_of_origin"],
-            'local_government_area' => $row["local_government_area"],
+            'created_by' => auth()->user()->id,
+            'description' => $row["description"],     
+            'amount' => $row["amount"],     
+            'class_id' => $this->class,
+            'session_id' => currentSchoolSession()->id,
+            'term_id' => currentSchoolTerm()->id,            
         ]);
 
     }
