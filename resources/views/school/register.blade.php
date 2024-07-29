@@ -22,8 +22,31 @@
     <!--Start Your Custom Style Now-->
     <link href="{{ asset('assets/dist/css/style.css') }}" rel="stylesheet">
     <style>
+        .preloader {
+            align-items: center;
+            background: gray;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            left: 0;
+            position: fixed;
+            top: 0;
+            transition: opacity 0.3s linear;
+            width: 100%;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .shepherd-modal-overlay-container.shepherd-modal-is-visible path {
+            pointer-events: none !important;
+        }
+
         body {
-            /* user-select: none; */
+            user-select: none;
         }
 
         .form-container {
@@ -35,17 +58,15 @@
             width: 100% !important;
         }
     </style>
-    {{-- <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function (e) {
-            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) || (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) || (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-                return false;
-            }
-        };
-    </script> --}}
+
 </head>
 
 <body class="bg-white">
+    <div class="preloader" style="display: none">
+        <div class="spinner-grow text-info m-1" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
     <div class="d-flex align-items-center justify-content-center text-center h-100vh">
         <div class="form-wrapper m-auto">
             <div class="form-container my-4">
@@ -61,7 +82,7 @@
                     @if (session('error'))
                         <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
-                    <form action="{{ route('register.submit') }}" method="POST">
+                    <form action="{{ route('register.submit') }}" method="POST" onsubmit="$('.preloader').show()">
                         @csrf
                         <div class="form-group">
                             <input type="text" name="name" class="form-control" placeholder="Enter School Name"
@@ -166,6 +187,16 @@
 <script src="{{ asset('assets/dist/js/sidebar.js') }}"></script>
 <script src="{{ asset('js/sweetalert/dist/sweetalert.min.js') }}"></script>
 <script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) || (e.ctrlKey && e
+                .shiftKey && e.keyCode == 'C'.charCodeAt(0)) || (e.ctrlKey && e.shiftKey && e.keyCode == 'J'
+                .charCodeAt(0)) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+            return false;
+        }
+    };
+</script>
+<script>
     @if ($errors->any())
         swal('Oops...', "{!! implode('', $errors->all(':message')) !!}", 'error')
     @endif
@@ -185,74 +216,6 @@
         )
     @endif
 </script>
-
-{{-- <script src="https://js.paystack.co/v1/inline.js"></script>
-    <script>
-        const paymentForm = document.getElementById('paymentForm');
-
-        paymentForm.addEventListener('submit', payWithPaystack, false);
-
-        function payWithPaystack(e) {
-            e.preventDefault();
-
-            let handler = PaystackPop.setup({
-                key: '{{ env('PAYSTACK_PUBLIC_KEY') }}',
-                email: document.getElementById('email').value,
-                amount: document.getElementById('amount').value * 100 * 100 * 100,
-                currency: 'NGN',
-                ref: '' + Math.floor((Math.random() * 1000000000) + 1),
-                callback: function(response) {
-                    let reference = response.reference;
-
-                    // Collect form data
-                    let formData = new FormData(paymentForm);
-                    formData.append('reference', reference);
-
-                    // Verify the transaction on the server
-                    fetch('{{ route('payment.verify') }}', {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: formData
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert('Payment successful and verified!');
-                            } else {
-                                alert('Payment verification failed: ' + data.message);
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                },
-                onClose: function() {
-                    alert('Payment was not completed.');
-                }
-            });
-
-            handler.openIframe();
-        }
-    </script> --}}
-
-{{-- Amount Input Validation Script --}}
-{{-- <script>
-        document.getElementById('amount-input').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/[^\d.]/g, ''); // Remove non-numeric characters except .
-            if (!isNaN(value) && value.length > 0) {
-                value = formatNumber(value);
-            }
-            e.target.value = value;
-        });
-
-        function formatNumber(value) {
-            const parts = value.split('.');
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            return parts.join('.');
-        }
-    </script> --}}
-
-
 </body>
 
 </html>

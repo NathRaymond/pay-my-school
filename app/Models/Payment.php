@@ -11,6 +11,7 @@ class Payment extends Model
 {
     use HasFactory;
     //use \OwenIt\Auditing\Auditable;
+    protected $table = 'payments';
     protected $guarded = [];
 
     public function user()
@@ -30,6 +31,4 @@ class Payment extends Model
     {
         return $this->belongsTo(Application::class, 'disbursed_by');
     }
-
-
 }
