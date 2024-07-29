@@ -27,9 +27,12 @@ use App\Http\Controllers\ClassesController;
 
 Auth::routes();
 
+// Route::get('/register', [SchoolController::class, 'schoolRegister'])->name('school.registration');
+// Route::post('/payment', [SchoolController::class, 'storePayment'])->name('store.payment');
+// Route::post('/payment/verify', [SchoolController::class, 'verifyPayment'])->name('verify.payment');
+// Route::post('/payment/callback', [SchoolController::class, 'handleCallback'])->name('payment.callback');
+
 Route::get('/register', [SchoolController::class, 'showForm'])->name('register.form');
-Route::post('/register/submit', [SchoolController::class, 'registerSchool'])->name('register.submit');
-Route::get('/payment/{id}', [SchoolController::class, 'showPaymentPage'])->name('payment.page');
 Route::post('/payment/verify', [SchoolController::class, 'verifyPayment'])->name('payment.verify');
 
 Route::post('/pay', 'PaymentController@redirectToGateway')->name('pay');

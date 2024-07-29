@@ -57,11 +57,7 @@
                         <h3 class="fs-24">Sign up for your account!</h3>
                     </div>
                     <div class="divider font-weight-bold text-uppercase text-dark d-table text-center my-3">&nbsp;</div>
-                    {{-- <form id="paymentForm"> --}}
-                    @if (session('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
-                    @endif
-                    <form action="{{ route('register.submit') }}" method="POST">
+                    <form id="paymentForm">
                         @csrf
                         <div class="form-group">
                             <input type="text" name="name" class="form-control" placeholder="Enter School Name"
@@ -89,7 +85,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <select class="form-control" name="country" required>
-                                        <option value="">Select Country</option>
+                                        <option>Select Country</option>
                                         @foreach ($countries as $country)
                                             <option value="{{ $country->id }}">{{ $country->name }}</option>
                                         @endforeach
@@ -99,9 +95,9 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <select class="form-control" name="state" required>
-                                        <option value="">Select State</option>
+                                        <option>Select State</option>
                                         @foreach ($states as $state)
-                                            <option value="{{ $state->id_no }}">{{ $state->state }}</option>
+                                            <option value="{{ $state->id }}">{{ $state->state }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -111,10 +107,11 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <select class="form-control" name="lga" required>
-                                        <option value="">Select LGA</option>
+                                        <option>Select LGA</option>
                                         @foreach ($lgas as $lga)
-                                            <option value="{{ $lga->id_no }}">{{ $lga->local_govt }}</option>
+                                            <option value="{{ $lga->id }}">{{ $lga->local_govt }}</option>
                                         @endforeach
+                                    </select>
                                     </select>
                                 </div>
                             </div>
@@ -130,10 +127,11 @@
                                 required>
                         </div>
                         <div class="form-group">
-                            <select class="form-control" name="amount" required>
-                                <option value="">Select Registration Fee</option>
+                            <select class="form-control" name="amount" min="0" step="any" id="amount"
+                                required readonly>
+                                <option>Select Registration Fee</option>
                                 @foreach ($amounts as $amount)
-                                    <option value="{{ $amount->amount }}">{{ $amount->amount }}</option>
+                                    <option value="{{ $amount->id }}">{{ $amount->amount }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -148,45 +146,21 @@
                                 in</a>
                         </div>
                     </form>
-</body>
 
-</html>
-</div>
-</div>
-</div>
-</div>
-<!-- /.End of form wrapper -->
-<!--Global script(used by all pages)-->
-<script src="{{ asset('assets/plugins/jQuery/jquery-3.4.1.min.js') }}"></script>
-<script src="{{ asset('assets/dist/js/popper.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/metisMenu/metisMenu.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js') }}"></script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.End of form wrapper -->
+    <!--Global script(used by all pages)-->
+    <script src="{{ asset('assets/plugins/jQuery/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ asset('assets/dist/js/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/metisMenu/metisMenu.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js') }}"></script>
 
-<script src="{{ asset('assets/dist/js/sidebar.js') }}"></script>
-<script src="{{ asset('js/sweetalert/dist/sweetalert.min.js') }}"></script>
-<script>
-    @if ($errors->any())
-        swal('Oops...', "{!! implode('', $errors->all(':message')) !!}", 'error')
-    @endif
-
-    @if (session()->has('success'))
-        swal(
-            'Success!',
-            "{{ session()->get('message') }}",
-            'success'
-        )
-    @endif
-    @if (session()->has('message'))
-        swal(
-            'Success!',
-            "{{ session()->get('message') }}",
-            'success'
-        )
-    @endif
-</script>
-
-{{-- <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="{{ asset('assets/dist/js/sidebar.js') }}"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
     <script>
         const paymentForm = document.getElementById('paymentForm');
 
@@ -233,10 +207,10 @@
 
             handler.openIframe();
         }
-    </script> --}}
+    </script>
 
-{{-- Amount Input Validation Script --}}
-{{-- <script>
+    {{-- Amount Input Validation Script --}}
+    <script>
         document.getElementById('amount-input').addEventListener('input', function(e) {
             let value = e.target.value.replace(/[^\d.]/g, ''); // Remove non-numeric characters except .
             if (!isNaN(value) && value.length > 0) {
@@ -250,7 +224,7 @@
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             return parts.join('.');
         }
-    </script> --}}
+    </script>
 
 
 </body>
