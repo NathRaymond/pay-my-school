@@ -45,37 +45,38 @@ Route::get('/failure', function () {
 })->name('failure');
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/', function () {
-        $data['user'] = Auth::user();
-        $data['totalstudent'] = Student::count();
-        $data['currentsession'] = AcademicSession::where('active', true)->first();
-
-        $data['currentTermIncome'] = 0;
-        $data['currentSessionIncome'] = 0;
-        $data['currentTermOutstanding'] = 0;
-
-        if ($data['currentsession']) {
-            $data['currentTermInvoices'] = Invoice::where('term_id', $data['currentsession']->current_term_id);
-            $data['currentTermIncome'] = Invoice::where('term_id', $data['currentsession']->current_term_id)->sum('total_amount');
-            $data['currentTermIncome'] = Invoice::where('term_id', $data['currentsession']->id)->sum('total_amount');
-
-            // Calculate outstanding amount for the current term
-            //  $data['totalAmount'] = $data['currentTermInvoices']->sum('total_amount');
-            //  $data['paidAmount'] = $data['currentTermInvoices']->sum('paid_amount');
-            //  $data['currentTermOutstanding'] = $totalAmount - $paidAmount;
-
-
-            // Calculate outstanding amount for the current term
-            $data['currentTermOutstanding'] = InvoiceBreakdown::where('term_id', $data['currentsession']->current_term_id)->where('payment_status', 'unpaid')->sum('payment_status');
-        }
-        return view('welcome', $data);
-    });
-
+    
     Route::group(['prefix' => 'admin'], function () {
+        Route::get('/', function () {
+            $data['user'] = Auth::user();
+            $data['totalstudent'] = Student::count();
+            $data['currentsession'] = AcademicSession::where('active', true)->first();
+    
+            $data['currentTermIncome'] = 0;
+            $data['currentSessionIncome'] = 0;
+            $data['currentTermOutstanding'] = 0;
+    
+            if ($data['currentsession']) {
+                $data['currentTermInvoices'] = Invoice::where('term_id', $data['currentsession']->current_term_id);
+                $data['currentTermIncome'] = Invoice::where('term_id', $data['currentsession']->current_term_id)->sum('total_amount');
+                $data['currentTermIncome'] = Invoice::where('term_id', $data['currentsession']->id)->sum('total_amount');
+    
+                // Calculate outstanding amount for the current term
+                //  $data['totalAmount'] = $data['currentTermInvoices']->sum('total_amount');
+                //  $data['paidAmount'] = $data['currentTermInvoices']->sum('paid_amount');
+                //  $data['currentTermOutstanding'] = $totalAmount - $paidAmount;
+    
+    
+                // Calculate outstanding amount for the current term
+                $data['currentTermOutstanding'] = InvoiceBreakdown::where('term_id', $data['currentsession']->current_term_id)->where('payment_status', 'unpaid')->sum('payment_status');
+            }
+            return view('welcome', $data);
+        });
         Route::resource('academic_session', AcademicSessionController::class);
         Route::get('activate_academic_session', [AcademicSessionController::class, 'activate'])->name('activate_session');
-        Route::resource('term', TermController::class);
-
+        Route::resource('academic_term', TermController::class);
+        Route::get('activate_academic_term', [TermController::class, 'activate'])->name('activate_term');
+     
         Route::group(['prefix' => 'student'], function () {
             Route::get('/', [App\Http\Controllers\StudentController::class, 'index'])->name('admin.student.index');
             Route::post('/create', [App\Http\Controllers\StudentController::class, 'create'])->name('admin.create.student');
@@ -95,6 +96,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/invoices', [InvoiceController::class, 'index'])->name('admin.invoices');
             Route::get('/invoice-breakdown', [InvoiceController::class, 'show'])->name('admin.invoice-breakdown');
             Route::get('/school-fees', [SchoolFeeController::class, 'index'])->name('admin.school-fees');
+            Route::get('/school-fees/details/{id}', [SchoolFeeController::class, 'details'])->name('admin.school-fees-detail');
+            Route::get('/delete-school-fee/{id}', [SchoolFeeController::class, 'destroy'])->name('delete-school-fee');
             Route::get('/download-school-fee-template', [SchoolFeeController::class, 'downloadExcel'])->name('download-school-fee-template');
             Route::post('/upload-school-fees', [SchoolFeeController::class, 'uploadSchoolFee'])->name('upload-school-fee');
         });
@@ -112,3 +115,6 @@ Route::group(['middleware' => ['auth']], function () {
         });
     });
 });
+
+
+Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');

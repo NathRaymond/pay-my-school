@@ -22,15 +22,15 @@
                                                     data-bs-target="#modal-edit">Edit</button>
                                                 <a class="btn btn-danger  btn-sm" id="deleteRecord"
                                                     data-id="${row.id}"
-                                                    href="/admin/academic_session/delete/${row.id}" data-myaction="loadDatatable"
+                                                    href="/admin/term/delete/${row.id}" data-myaction="loadDatatable"
                                                     >Delete</a>
-                                                    <a href="/admin/activate_academic_session?id=${row.id}" onclick="return confirm('Are sure you want to active this session?')" class="btn btn-success flex-end m-1 btn-sm">Activate</a>
+                                                    <a href="/admin/activate_academic_term?id=${row.id}" onclick="return confirm('Are sure you want to active this term?')" class="btn btn-success flex-end m-1 btn-sm">Activate</a>
                                             </div>  `;
 
                 return buttons;
             }
         }
     ];
-    var dataUrl = "{{ route('academic_session.index') }}";
+    var dataUrl = "{{ route('academic_term.index') }}";
     loadPageDatatable();
 </script>

@@ -32,14 +32,20 @@
                         <li><a href="dashboard_two.html">Dashboard Two</a></li>
                     </ul> -->
                 </li>
-                <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Academic
-                        Session</a></li>
-                <li><a href="{{ route('admin.school-fees') }}"><i class="typcn typcn-messages mr-2"></i>Manage School
-                        Fees</a></li>
-                <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage
-                        Invoices</a></li>
-                <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage
-                        Payment</a></li>
+                <li>
+                    <a class="has-arrow material-ripple" href="#">
+                        <i class="typcn typcn-setting mr-2"></i>
+                        Configuration
+                    </a>
+                    <ul class="nav-second-level">
+                        <li class="{{ Route::currentRouteName() === 'academic_session.index' ? 'mm-active' : '' }}"><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Academic Session</a></li>
+                        <li class="{{ Route::currentRouteName() === 'academic_term.index' ? 'mm-active' : '' }}"><a href="{{ route('academic_term.index') }}"><i class="typcn typcn-messages mr-2"></i>Academic Term</a></li>
+                    </ul>
+                </li>
+               
+                <li><a href="{{ route('admin.school-fees') }}"><i class="typcn typcn-messages mr-2"></i>Manage School Fees</a></li>
+                <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage Invoices</a></li>
+                <li><a href="{{ route('academic_session.index') }}"><i class="typcn typcn-messages mr-2"></i>Manage Payment</a></li>
 
 
                 <li class="{{ Route::currentRouteName() === 'admin.student.index' ? 'mm-active' : '' }}"><a

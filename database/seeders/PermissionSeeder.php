@@ -19,13 +19,7 @@ class PermissionSeeder extends Seeder
             'create-user',
             'approve-loan',
             'approve-grant',
-            
-            
-
-
-
-
-
+  
         ];
         foreach ($permissions as $permission) {
             Permission::create(['name' => $permission, 'guard_name' => 'sanctum']);
