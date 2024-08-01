@@ -77,5 +77,5 @@
                 </li>
             </ul>
         </nav>
-    </div><!-- sidebar-body -->
+    </div>
 </nav>
